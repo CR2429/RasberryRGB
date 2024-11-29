@@ -6,21 +6,23 @@ import threading
 
 bouton = Button(4) #le bouton du joystick qui es sur la pin 7 = GPIO4
 adc = ADS7830() #Ceci est la class qui controle ma puce ADC
-
+adc_lock = threading.Lock() #ceci est pour eviter les conflit entre les threads dans la lecture de la puce ADC
 
 def loopX():
     """
     thread qui gere l'axe X du joystick (couleur)
     """
     while True:
-        valeur_detect = adc.analogRead(0)
+        with adc_lock:
+            valeur_detect = adc.analogRead(0)
         
         #clic gauche
         if valeur_detect < 40: 
             print("clic gauche")
             
             while valeur_detect < 40:
-                valeur_detect = adc.analogRead(0)
+                with adc_lock:
+                    valeur_detect = adc.analogRead(0)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
@@ -30,7 +32,8 @@ def loopX():
             print("clic droit")
             
             while valeur_detect > 215:
-                valeur_detect = adc.analogRead(0)
+                with adc_lock:
+                    valeur_detect = adc.analogRead(0)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
@@ -43,14 +46,16 @@ def loopY():
     thread qui gere l'axe Y du joystick (mode)
     """
     while True:
-        valeur_detect = adc.analogRead(1)
+        with adc_lock:
+            valeur_detect = adc.analogRead(1)
         
         #clic bas
         if valeur_detect < 40: 
             print("clic bas")
             
             while valeur_detect < 40:
-                valeur_detect = adc.analogRead(1)
+                with adc_lock:
+                    valeur_detect = adc.analogRead(1)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
@@ -60,7 +65,8 @@ def loopY():
             print("clic haut")
             
             while valeur_detect > 215:
-                valeur_detect = adc.analogRead(1)
+                with adc_lock:
+                    valeur_detect = adc.analogRead(1)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
