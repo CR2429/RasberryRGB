@@ -1,12 +1,18 @@
 import time
 from NosThread.led import changeColor, changeMode
+from config import config_data
 
-def loopX(SEUIL_GAUCHE,SEUIL_DROIT,adc,adc_lock):
+def loopX():
     """
     thread qui gere l'axe X du joystick (couleur)
     """
+    #recuperer les valeur
+    adc = config_data['adc']
+    SEUIL_GAUCHE = config_data['SEUIL_GAUCHE']
+    SEUIL_DROIT = config_data['SEUIL_DROIT']
+    
     while True:
-        with adc_lock:
+        with config_data["adc_lock"]:
             valeur_detect = adc.analogRead(2)
         
         #clic gauche
@@ -15,7 +21,7 @@ def loopX(SEUIL_GAUCHE,SEUIL_DROIT,adc,adc_lock):
             changeColor("left")
             
             while valeur_detect < SEUIL_GAUCHE:
-                with adc_lock:
+                with config_data["adc_lock"]:
                     valeur_detect = adc.analogRead(2)
                 time.sleep(0.2)
                 
@@ -27,7 +33,7 @@ def loopX(SEUIL_GAUCHE,SEUIL_DROIT,adc,adc_lock):
             changeColor("right")
             
             while valeur_detect > SEUIL_GAUCHE:
-                with adc_lock:
+                with config_data["adc_lock"]:
                     valeur_detect = adc.analogRead(2)
                 time.sleep(0.2)
                 
@@ -36,12 +42,17 @@ def loopX(SEUIL_GAUCHE,SEUIL_DROIT,adc,adc_lock):
         #temps de recharge
         time.sleep(0.2)
 
-def loopY(SEUIL_HAUT,SEUIL_BAS,adc,adc_lock):
+def loopY():
     """
     thread qui gere l'axe Y du joystick (mode)
     """
+    #recuperer les valeur
+    adc = config_data['adc']
+    SEUIL_HAUT = config_data['SEUIL_HAUT']
+    SEUIL_BAS = config_data['SEUIL_BAS']
+    
     while True:
-        with adc_lock:
+        with config_data["adc_lock"]:
             valeur_detect = adc.analogRead(7)
         
         #clic bas
@@ -50,7 +61,7 @@ def loopY(SEUIL_HAUT,SEUIL_BAS,adc,adc_lock):
             changeMode("down")
             
             while valeur_detect < SEUIL_BAS:
-                with adc_lock:
+                with config_data["adc_lock"]:
                     valeur_detect = adc.analogRead(7)
                 time.sleep(0.2)
                 
@@ -62,7 +73,7 @@ def loopY(SEUIL_HAUT,SEUIL_BAS,adc,adc_lock):
             changeMode("up")
             
             while valeur_detect > SEUIL_HAUT:
-                with adc_lock:
+                with config_data["adc_lock"]:
                     valeur_detect = adc.analogRead(7)
                 time.sleep(0.2)
                 
@@ -71,17 +82,20 @@ def loopY(SEUIL_HAUT,SEUIL_BAS,adc,adc_lock):
         #temps de recharge
         time.sleep(0.2)
 
-def loopZ(bouton):
+def loopZ():
     """
     thread qui gere le bouton du joystick (on/off)
     """
+    #valeur
+    bouton = config_data['bouton']
     allumer = False
+    
     while True:
         bouton_joystick = bouton.value
         
         if bouton_joystick:
             #changer on off
-            if allumer :
+            if allumer : #TODO : ah voir comment on considere la led allumer ou eteinte
                 allumer = False
                 print("Etaint")
             else :
