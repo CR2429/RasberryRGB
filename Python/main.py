@@ -13,24 +13,84 @@ def loopX():
     thread qui gere l'axe X du joystick (couleur)
     """
     while True:
-        print(f'valeur x : {adc.analogRead(0)}')
-        time.sleep(1)
+        valeur_detect = adc.analogRead(0)
+        
+        #clic gauche
+        if valeur_detect < 5: 
+            print("clic gauche")
+            
+            while valeur_detect < 5:
+                valeur_detect = adc.analogRead(0)
+                time.sleep(0.2)
+                
+            time.sleep(1.5)
+        
+        #clic droit
+        if valeur_detect > 250: 
+            print("clic droit")
+            
+            while valeur_detect > 250:
+                valeur_detect = adc.analogRead(0)
+                time.sleep(0.2)
+                
+            time.sleep(1.5)
+        
+        #temps de recharge
+        time.sleep(0.2)
 
 def loopY():
     """
     thread qui gere l'axe Y du joystick (mode)
     """
     while True:
-        print(f'valeur y : {adc.analogRead(1)}')
-        time.sleep(1)
+        valeur_detect = adc.analogRead(1)
+        
+        #clic haut
+        if valeur_detect < 5: 
+            print("clic haut")
+            
+            while valeur_detect < 5:
+                valeur_detect = adc.analogRead(1)
+                time.sleep(0.2)
+                
+            time.sleep(1.5)
+        
+        #clic bas
+        if valeur_detect > 250: 
+            print("clic bas")
+            
+            while valeur_detect > 250:
+                valeur_detect = adc.analogRead(1)
+                time.sleep(0.2)
+                
+            time.sleep(1.5)
+        
+        #temps de recharge
+        time.sleep(0.2)
 
 def loopZ():
     """
     thread qui gere le bouton du joystick (on/off)
     """
     while True:
-        print(f'valeur z : {not bouton.value}')
-        time.sleep(1)
+        bouton_joystick = bouton.value
+        allumer = False
+        
+        if bouton_joystick:
+            #changer on off
+            if allumer :
+                allumer = False
+                print("Etaint")
+            else :
+                allumer = True
+                print("Allumer")
+                
+            #boucle pour eviter les erreurs
+            while bouton_joystick:
+                bouton_joystick = bouton.value
+                time.sleep(0.2)
+            
+        time.sleep(0.2)
 
 def destroy():
     """
