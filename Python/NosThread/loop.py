@@ -1,5 +1,5 @@
 import time
-from main import changeColor, changeMode
+from led import changeColor, changeMode
 
 def loopX(SEUIL_GAUCHE,SEUIL_DROIT,adc,adc_lock):
     """
