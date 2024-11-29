@@ -24,26 +24,26 @@ def loopX():
     """
     while True:
         with adc_lock:
-            valeur_detect = adc.analogRead(0)
+            valeur_detect = adc.analogRead(2)
         
         #clic gauche
-        if valeur_detect < 40: 
+        if valeur_detect < SEUIL_GAUCHE: 
             print("clic gauche")
             
-            while valeur_detect < 40:
+            while valeur_detect < SEUIL_GAUCHE:
                 with adc_lock:
-                    valeur_detect = adc.analogRead(0)
+                    valeur_detect = adc.analogRead(2)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
         
         #clic droit
-        if valeur_detect > 215: 
+        if valeur_detect > SEUIL_DROIT: 
             print("clic droit")
             
-            while valeur_detect > 215:
+            while valeur_detect > SEUIL_GAUCHE:
                 with adc_lock:
-                    valeur_detect = adc.analogRead(0)
+                    valeur_detect = adc.analogRead(2)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
@@ -57,26 +57,26 @@ def loopY():
     """
     while True:
         with adc_lock:
-            valeur_detect = adc.analogRead(1)
+            valeur_detect = adc.analogRead(7)
         
         #clic bas
-        if valeur_detect < 40: 
+        if valeur_detect < SEUIL_BAS: 
             print("clic bas")
             
-            while valeur_detect < 40:
+            while valeur_detect < SEUIL_BAS:
                 with adc_lock:
-                    valeur_detect = adc.analogRead(1)
+                    valeur_detect = adc.analogRead(7)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
         
         #clic haut
-        if valeur_detect > 215: 
+        if valeur_detect > SEUIL_HAUT: 
             print("clic haut")
             
-            while valeur_detect > 215:
+            while valeur_detect > SEUIL_HAUT:
                 with adc_lock:
-                    valeur_detect = adc.analogRead(1)
+                    valeur_detect = adc.analogRead(7)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
@@ -120,9 +120,9 @@ def destroy():
 if __name__ == '__main__':
     print('Demarrage du serveur en cours')
     print('Calibration en cours')
-    VALEUR_CENTRAL_X = adc.analogRead(0)
+    VALEUR_CENTRAL_X = adc.analogRead(2)
     print(f'VALEUR_CENTRAL_X = {VALEUR_CENTRAL_X}')
-    VALEUR_CENTRAL_Y = adc.analogRead(1)
+    VALEUR_CENTRAL_Y = adc.analogRead(7)
     print(f'VALEUR_CENTRAL_Y = {VALEUR_CENTRAL_Y}')
     SEUIL_HAUT = VALEUR_CENTRAL_X + 80
     SEUIL_BAS = VALEUR_CENTRAL_X - 80
