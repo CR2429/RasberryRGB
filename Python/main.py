@@ -67,9 +67,9 @@ if __name__ == '__main__':
     
     #thread
     try:
-        threadX = threading.Thread(target=loopX(SEUIL_GAUCHE,SEUIL_DROIT,adc,adc_lock))
-        threadY = threading.Thread(target=loopY(SEUIL_HAUT,SEUIL_BAS,adc,adc_lock))
-        threadZ = threading.Thread(target=loopZ(bouton))
+        threadX = threading.Thread(target=loopX, args=(SEUIL_GAUCHE,SEUIL_DROIT,adc,adc_lock))
+        threadY = threading.Thread(target=loopY, args=(SEUIL_HAUT,SEUIL_BAS,adc,adc_lock))
+        threadZ = threading.Thread(target=loopZ, args=(bouton))
         
         threadX.start()
         threadY.start()
