@@ -3,6 +3,9 @@ import time
 from ADCDevice import *
 import threading
 from NosThread.loop import *
+import RPi.GPIO as GPIO
+
+GPIO.cleanup()
 
 bouton = Button(4) #le bouton du joystick qui es sur la pin 7 = GPIO4
 adc = ADS7830() #Ceci est la class qui controle ma puce ADC
