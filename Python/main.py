@@ -15,21 +15,21 @@ def loopX():
     while True:
         valeur_detect = adc.analogRead(0)
         
-        #clic gauche
-        if valeur_detect < 5: 
-            print("clic gauche")
+        #clic droit
+        if valeur_detect < 25: 
+            print("clic droit")
             
-            while valeur_detect < 5:
+            while valeur_detect < 25:
                 valeur_detect = adc.analogRead(0)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
         
-        #clic droit
-        if valeur_detect > 250: 
-            print("clic droit")
+        #clic gauche
+        if valeur_detect > 230: 
+            print("clic gauche")
             
-            while valeur_detect > 250:
+            while valeur_detect > 230:
                 valeur_detect = adc.analogRead(0)
                 time.sleep(0.2)
                 
@@ -46,20 +46,20 @@ def loopY():
         valeur_detect = adc.analogRead(1)
         
         #clic haut
-        if valeur_detect < 5: 
+        if valeur_detect < 25: 
             print("clic haut")
             
-            while valeur_detect < 5:
+            while valeur_detect < 25:
                 valeur_detect = adc.analogRead(1)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
         
         #clic bas
-        if valeur_detect > 250: 
+        if valeur_detect > 230: 
             print("clic bas")
             
-            while valeur_detect > 250:
+            while valeur_detect > 230:
                 valeur_detect = adc.analogRead(1)
                 time.sleep(0.2)
                 
@@ -72,9 +72,9 @@ def loopZ():
     """
     thread qui gere le bouton du joystick (on/off)
     """
+    allumer = False
     while True:
         bouton_joystick = bouton.value
-        allumer = False
         
         if bouton_joystick:
             #changer on off
