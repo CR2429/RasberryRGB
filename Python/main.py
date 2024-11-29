@@ -45,25 +45,6 @@ def setColor(r_val,g_val,b_val):
  led.green = g_val/255
  led.blue = b_val/255 
 
- def changeColor(direction):
-    global current_index, current_color
-    # Cycle through the color list
-    if direction == "right":
-        current_index += 1
-    elif direction == "left":
-        current_index -= 1
-
-    # Wrap around the index if it goes out of bounds
-    if current_index >= len(color_list):
-        current_index = 0
-    elif current_index < 0:
-        current_index = len(color_list) - 1
-
-    # Set the new color
-    current_color = color_list[current_index]  # Save the current color
-    setColor(*current_color)  # Set the LED to the new color
-    print(f"Changed to color {current_index}: r={current_color[0]}, g={current_color[1]}, b={current_color[2]}")
-
 def changeColor(direction):
     global current_index, current_color
     # Cycle through the color list
