@@ -15,21 +15,21 @@ def loopX():
     while True:
         valeur_detect = adc.analogRead(0)
         
-        #clic droit
-        if valeur_detect < 25: 
-            print("clic droit")
+        #clic gauche
+        if valeur_detect < 55: 
+            print("clic gauche")
             
-            while valeur_detect < 25:
+            while valeur_detect < 55:
                 valeur_detect = adc.analogRead(0)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
         
-        #clic gauche
-        if valeur_detect > 230: 
-            print("clic gauche")
+        #clic droit
+        if valeur_detect > 200: 
+            print("clic droit")
             
-            while valeur_detect > 230:
+            while valeur_detect > 200:
                 valeur_detect = adc.analogRead(0)
                 time.sleep(0.2)
                 
@@ -45,21 +45,21 @@ def loopY():
     while True:
         valeur_detect = adc.analogRead(1)
         
-        #clic haut
-        if valeur_detect < 25: 
-            print("clic haut")
+        #clic bas
+        if valeur_detect < 55: 
+            print("clic bas")
             
-            while valeur_detect < 25:
+            while valeur_detect < 55:
                 valeur_detect = adc.analogRead(1)
                 time.sleep(0.2)
                 
             time.sleep(1.5)
         
-        #clic bas
-        if valeur_detect > 230: 
-            print("clic bas")
+        #clic haut
+        if valeur_detect > 200: 
+            print("clic haut")
             
-            while valeur_detect > 230:
+            while valeur_detect > 200:
                 valeur_detect = adc.analogRead(1)
                 time.sleep(0.2)
                 
