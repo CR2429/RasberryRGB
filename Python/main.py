@@ -1,10 +1,10 @@
-from gpiozero import Button, RGBLED
-import time
-from ADCDevice import *
 import threading
 from NosThread.loop import *
 import RPi.GPIO as GPIO
 from config import config_data
+from my_http_request_handler import MyHttpRequestHandler
+from http.server import HTTPServer
+import ssl
 
 GPIO.cleanup()
 
@@ -42,6 +42,13 @@ if __name__ == '__main__':
         threadX.start()
         threadY.start()
         threadZ.start()
+        
+        #serveur get/post
+        handler = MyHttpRequestHandler
+        serveur = HTTPServer(('localhost', 4443), handler)
+        serveur.socket = ssl.wrap_socket(serveur.socket, keyfile='cle.pem', certfile='certificat.pem', server_side=True)
+        serveur.serve_forever()
+        
         print('Serveur ouvert')
         
     except KeyboardInterrupt:
