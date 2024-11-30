@@ -2,6 +2,7 @@ import threading
 import time
 from config import config_data
 
+# Configure la couleur de la LED avec les valeurs spécifiées
 def setColor(r_val,g_val,b_val):
     led = config_data["led"]
     led.red=r_val/255 
@@ -15,21 +16,19 @@ def changeColor(direction):
     current_index = config_data["current_index"]
     color_list = config_data["color_list"]
     
-    # Cycle through the color list
     if direction == "right":
         current_index += 1
     elif direction == "left":
         current_index -= 1
 
-    # Wrap around the index if it goes out of bounds
     if current_index >= len(color_list):
         current_index = 0
     elif current_index < 0:
         current_index = len(color_list) - 1
 
-    # Set the new color
-    config_data["current_color"] = color_list[current_index]  # Save the current color
-    setColor(*current_color)  # Set the LED to the new color
+    # Définit la nouvelle couleur
+    config_data["current_color"] = color_list[current_index]  
+    setColor(*current_color)  
     print(f"Changed to color {current_index}: r={current_color[0]}, g={current_color[1]}, b={current_color[2]}")
 
 def changeMode(direction):
@@ -37,53 +36,51 @@ def changeMode(direction):
     current_index = config_data["current_index"]
     mode_active = config_data["mode_active"]
     mode_thread = config_data["mode_thread"]
-    modes = ["vague", "flash", "full"]  # Example modes
+    modes = ["vague", "flash", "full"]  
     
     if direction == 'up':
-        current_index = (current_index + 1) % len(modes)  # Move to the next mode
+        current_index = (current_index + 1) % len(modes)  
     elif direction == 'down':
-        current_index = (current_index - 1) % len(modes)  # Move to the previous mode
+        current_index = (current_index - 1) % len(modes) 
     
     print(f"Current mode: {modes[current_index]}")
      
      
     if mode_thread is not None and mode_thread.is_alive():
-        mode_active = False  # Stop the active mode
+        mode_active = False 
         config_data["mode_active"] = mode_active
-        mode_thread.join()  
+        mode_thread.join()   # Attend la fin du thread en cours
 
     
-    # Start the new mode
     mode_active = True
     config_data["mode_active"] = mode_active
     if current_index == 0:
         mode_thread = threading.Thread(target=vague)
-        mode_thread.start()  # Run vague in a separate thread
+        mode_thread.start()  
         config_data["mode_thread"] = mode_thread
     elif current_index == 1:
         mode_thread = threading.Thread(target=flash)
-        mode_thread.start()  # Run flash in a separate thread
+        mode_thread.start()  
         config_data["mode_thread"] = mode_thread
     elif current_index == 2:
-        r, g, b = config_data["current_color"]  # Just for example, use current color for full mode
+        r, g, b = config_data["current_color"]  
         full(r, g, b)
     
 
 def vague():
     """
-    Crée un effet de vague, où la LED change de couleur progressivement.
+    Crée un effet de vague, où la LED change d'intensité progressivement.
     """
     #recuperer data
     mode_active = config_data["mode_active"]
     
-    while mode_active:  # Run while mode is active
-        r, g, b = config_data['current_color']  # Keep the current color
-        for intensity in range(0, 256):  # On fait varier l'intensité de 0 à 255
-            setColor(intensity * r // 255, intensity * g // 255, intensity * b // 255)  # Fade the current color
-            time.sleep(0.01)  # Vitesse d'augmentation de l'intensité
-
-        for intensity in range(255, -1, -1):  # On diminue l'intensité de 255 à 0
-            setColor(intensity * r // 255, intensity * g // 255, intensity * b // 255)  # Fade the current color
+    while mode_active:  
+        r, g, b = config_data['current_color'] 
+        for intensity in range(0, 256):  
+            setColor(intensity * r // 255, intensity * g // 255, intensity * b // 255) 
+            time.sleep(0.01)
+        for intensity in range(255, -1, -1): 
+            setColor(intensity * r // 255, intensity * g // 255, intensity * b // 255) 
             time.sleep(0.01)  
             
         #reverification
@@ -99,14 +96,14 @@ def flash(interval=1):
     led = config_data["led"]
     
     while mode_active:
-        r, g, b = config_data['current_color']  # Always use the current color
+        r, g, b = config_data['current_color']  
         setColor(r, g, b)
-        led.on()  # Allume la LED
+        led.on()  
         setColor(r, g, b)
         time.sleep(interval)
-        # Maintient la LED allumée pour l'intervalle spécifié
-        led.off()  # Éteint la LED
-        time.sleep(interval)  # Maintient la LED éteinte pour l'intervalle spécifié
+       
+        led.off() 
+        time.sleep(interval)  
         
         #reverification
         mode_active = config_data["mode_active"]
