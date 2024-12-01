@@ -1,69 +1,58 @@
 import threading
 import time
-from config import config_data
+from config import config_data as data
 
 # Configure la couleur de la LED avec les valeurs spécifiées
 def setColor(r_val,g_val,b_val):
-    led = config_data["led"]
-    led.red=r_val/255 
-    led.green = g_val/255
-    led.blue = b_val/255 
-    config_data["led"] = led
+    data["led"].red=r_val/255 
+    data["led"].green = g_val/255
+    data["led"].blue = b_val/255 
 
 def changeColor(direction):
     #recuperer les valeurs
-    current_color = config_data["current_color"]
-    current_index = config_data["current_index"]
-    color_list = config_data["color_list"]
+    color_list = data["color_list"]
     
     if direction == "right":
-        current_index += 1
+        data["current_index"] += 1
     elif direction == "left":
-        current_index -= 1
+        data["current_index"] -= 1
 
-    if current_index >= len(color_list):
-        current_index = 0
-    elif current_index < 0:
-        current_index = len(color_list) - 1
+    if data["current_index"] >= len(color_list):
+        data["current_index"] = 0
+    elif data["current_index"] < 0:
+        data["current_index"] = len(color_list) - 1
 
     # Définit la nouvelle couleur
-    config_data["current_color"] = color_list[current_index]  
-    setColor(*current_color)  
-    print(f"Changed to color {current_index}: r={current_color[0]}, g={current_color[1]}, b={current_color[2]}")
+    data["current_color"] = color_list[data["current_index"]]  
+    setColor(*data["current_color"])  
+    print(f"Changed to color {data["current_index"]}: r={data["current_color"][0]}, g={data["current_color"][1]}, b={data["current_color"][2]}")
 
 def changeMode(direction):
     #recuperer les datas
-    current_index = config_data["current_index"]
-    mode_active = config_data["mode_active"]
-    mode_thread = config_data["mode_thread"]
     modes = ["vague", "flash", "full"]  
     
     if direction == 'up':
-        current_index = (current_index + 1) % len(modes)  
+        data["current_index"] = (data["current_index"] + 1) % len(modes)  
     elif direction == 'down':
-        current_index = (current_index - 1) % len(modes) 
+        data["current_index"] = (data["current_index"] - 1) % len(modes) 
     
-    print(f"Current mode: {modes[current_index]}")
+    print(f"Current mode: {modes[data["current_index"]]}")
      
      
-    if mode_thread is not None and mode_thread.is_alive():
-        mode_active = False 
-        config_data["mode_active"] = mode_active
-        mode_thread.join()   # Attend la fin du thread en cours
+    if data["mode_thread"] is not None and data["mode_thread"].is_alive():
+        data["mode_active"] = False 
+        data["mode_thread"].join()   # Attend la fin du thread en cours
 
     
-    mode_active = True
-    config_data["mode_active"] = mode_active
-    if current_index == 0:
-        mode_thread = threading.Thread(target=vague)
-        mode_thread.start()  
-        config_data["mode_thread"] = mode_thread
-    elif current_index == 1:
-        mode_thread = threading.Thread(target=flash)
-        mode_thread.start()  
-        config_data["mode_thread"] = mode_thread
-    elif current_index == 2:
-        r, g, b = config_data["current_color"]  
+    data["mode_active"] = True
+    if data["current_index"] == 0:
+        data["mode_thread"] = threading.Thread(target=vague)
+        data["mode_thread"].start()  
+    elif data["current_index"] == 1:
+        data["mode_thread"] = threading.Thread(target=flash)
+        data["mode_thread"].start()  
+    elif data["current_index"] == 2:
+        r, g, b = data["current_color"]  
         full(r, g, b)
     
 
