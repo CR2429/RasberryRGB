@@ -45,7 +45,7 @@ def runTests():
         
         #log
         with open("test_output.log", "w", encoding="utf-8") as file:
-            runner = unittest.TextTestResult(stream=file, verbosity=2)
+            runner = unittest.TextTestRunner(stream=file, verbosity=2)
             runner.run(test)
  
         time.sleep(1)
