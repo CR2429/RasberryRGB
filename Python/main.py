@@ -5,7 +5,7 @@ from config import config_data
 from my_http_request_handler import MyHttpRequestHandler
 from http.server import HTTPServer
 import ssl
-import testmain.TestGPIOFunctions as Test 
+from testmain import TestGPIOFunctions as Test 
 import unittest
 
 #setup pin GPIO
