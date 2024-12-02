@@ -1,13 +1,12 @@
-from gpiozero import Button, RGBLED
+from gpiozero import RGBLED, Button, LED
 import threading
 from ADCDevice import ADS7830
 
 #Se fichier contient TOUT les valeur mutable qui pourra etre modifier peut importe le fichier
 config_data = {
-    "bouton": Button(4),  # Le bouton du joystick qui est sur la pin 7 = GPIO4
     "adc": ADS7830(),  # Cette classe contrôle la puce ADC
     "adc_lock": threading.Lock(),  # Verrou pour éviter les conflits entre threads dans la lecture de la puce ADC
-    "led": RGBLED(red=17, green=18, blue=27, active_high=True),  # Définition des pins pour RGB LED
+    "led": RGBLED(red=17, green=18, blue=27, active_high=False),  # Définition des pins pour RGB LED
     "color_list": [
         (255, 0, 0),  # Red 1
         (0, 255, 0),  # Green 2
@@ -36,4 +35,7 @@ config_data = {
     "SEUIL_BAS": 0,
     "SEUIL_GAUCHE": 0,
     "SEUIL_DROIT": 0,
+    "on/off":False,
+    "led-alim": LED(22), #led jaune mise sur la broche 15 (GPIO22)
+    "bouton-alim": Button(4) #bouton joystick mise sur la broche 7 (GPIO4)
 }

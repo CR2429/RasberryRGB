@@ -6,15 +6,44 @@ from my_http_request_handler import MyHttpRequestHandler
 from http.server import HTTPServer
 import ssl
 
+#setup pin GPIO
 GPIO.cleanup()
+
+
+def calibrage_adc():
+    """
+    Calibre les valeurs centrales de l'ADC en prenant plusieurs lectures moyennes.
+    """
+    print("Début du calibrage...")
+    num_samples = 10
+    valeurs_x = []
+    valeurs_y = []
+
+    for _ in range(num_samples):
+        valeurs_x.append(config_data["adc"].analogRead(0))
+        valeurs_y.append(config_data["adc"].analogRead(1))
+        time.sleep(0.1)  # Délai pour éviter des lectures instantanées
+
+    config_data['VALEUR_CENTRAL_X'] = sum(valeurs_x) // len(valeurs_x)
+    config_data['VALEUR_CENTRAL_Y'] = sum(valeurs_y) // len(valeurs_y)
+
+    seuil_offset = 60
+    config_data['SEUIL_HAUT'] = config_data['VALEUR_CENTRAL_Y'] + seuil_offset
+    config_data['SEUIL_BAS'] = config_data['VALEUR_CENTRAL_Y'] - seuil_offset
+    config_data['SEUIL_DROIT'] = config_data['VALEUR_CENTRAL_X'] + seuil_offset
+    config_data['SEUIL_GAUCHE'] = config_data['VALEUR_CENTRAL_X'] - seuil_offset
+
+    print(f"Calibrage terminé : VALEUR_CENTRAL_X = {config_data['VALEUR_CENTRAL_X']}, "
+          f"VALEUR_CENTRAL_Y = {config_data['VALEUR_CENTRAL_Y']}")
 
 def destroy():
     """
     Gere l'arret des processus de la puce et du joystick
     """
     config_data["adc"].close()
-    config_data["bouton"].close()
     config_data["led"].close()
+    config_data["led-alim"].close()
+    config_data["bouton-alim"].close()
     GPIO.cleanup()
     
     
@@ -22,16 +51,7 @@ def destroy():
 if __name__ == '__main__':
     #calibrage
     print('Demarrage du serveur en cours')
-    print('Calibration en cours')
-    config_data['VALEUR_CENTRAL_X'] = config_data["adc"].analogRead(2)
-    print(f'VALEUR_CENTRAL_X = {config_data["VALEUR_CENTRAL_X"]}')
-    config_data['VALEUR_CENTRAL_Y'] = config_data["adc"].analogRead(7)
-    print(f'VALEUR_CENTRAL_Y = {config_data["VALEUR_CENTRAL_Y"]}')
-    config_data['SEUIL_HAUT'] = config_data['VALEUR_CENTRAL_X'] + 80
-    config_data['SEUIL_BAS'] = config_data['VALEUR_CENTRAL_X'] - 80
-    config_data['SEUIL_DROIT'] = config_data['VALEUR_CENTRAL_Y'] + 80
-    config_data['SEUIL_GAUCHE'] = config_data['VALEUR_CENTRAL_Y'] - 80
-    print('Calibrage terminer')
+    calibrage_adc()
     
     #thread
     try:
