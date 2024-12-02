@@ -42,11 +42,11 @@ def runTests():
     while True:
         #run les tests
         test = unittest.TestLoader().loadTestsFromTestCase(Test)
-        
+        unittest.TextTestRunner().run(test)
         #log
-        with open("test_output.log", "w", encoding="utf-8") as file:
-            runner = unittest.TextTestRunner(stream=file, verbosity=2)
-            runner.run(test)
+        #with open("test_output.log", "w", encoding="utf-8") as file:
+        #    runner = unittest.TextTestRunner(stream=file, verbosity=2)
+        #    runner.run(test)
  
         time.sleep(1)
 
