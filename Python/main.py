@@ -5,6 +5,8 @@ from config import config_data
 from my_http_request_handler import MyHttpRequestHandler
 from http.server import HTTPServer
 import ssl
+import testmain.TestGPIOFunctions as Test 
+import unittest
 
 #setup pin GPIO
 GPIO.cleanup()
@@ -27,7 +29,7 @@ def calibrage_adc():
     config_data['VALEUR_CENTRAL_X'] = sum(valeurs_x) // len(valeurs_x)
     config_data['VALEUR_CENTRAL_Y'] = sum(valeurs_y) // len(valeurs_y)
 
-    seuil_offset = 60
+    seuil_offset = 80
     config_data['SEUIL_HAUT'] = config_data['VALEUR_CENTRAL_Y'] + seuil_offset
     config_data['SEUIL_BAS'] = config_data['VALEUR_CENTRAL_Y'] - seuil_offset
     config_data['SEUIL_DROIT'] = config_data['VALEUR_CENTRAL_X'] + seuil_offset
@@ -35,6 +37,13 @@ def calibrage_adc():
 
     print(f"Calibrage terminé : VALEUR_CENTRAL_X = {config_data['VALEUR_CENTRAL_X']}, "
           f"VALEUR_CENTRAL_Y = {config_data['VALEUR_CENTRAL_Y']}")
+
+def runTests():
+    while True:
+        #run les tests
+        test = unittest.TestLoader().loadTestsFromTestCase(Test)
+        unittest.TextTestRunner.run(test)
+        time.sleep(1)
 
 def destroy():
     """
@@ -58,10 +67,14 @@ if __name__ == '__main__':
         threadX = threading.Thread(target=loopX)
         threadY = threading.Thread(target=loopY)
         threadZ = threading.Thread(target=loopZ)
+        testThread = threading.Thread(target=runTests, daemon=True)
         
         threadX.start()
         threadY.start()
         threadZ.start()
+        
+        time.sleep(0.01)
+        testThread.start()
         
         #serveur get/post
         handler = MyHttpRequestHandler

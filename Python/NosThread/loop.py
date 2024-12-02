@@ -19,6 +19,7 @@ def loopX():
         #clic gauche
         if valeur_detect < SEUIL_GAUCHE and data["on/off"]: 
             print("clic gauche")
+            data["test_joystick"] = "left"
             changeColor("left")
             
             while valeur_detect < SEUIL_GAUCHE:
@@ -31,6 +32,7 @@ def loopX():
         #clic droit
         if valeur_detect > SEUIL_DROIT and data["on/off"]: 
             print("clic droit")
+            data["test_joystick"] = "right"
             changeColor("right")
             
             while valeur_detect > SEUIL_GAUCHE:
@@ -60,6 +62,7 @@ def loopY():
         #clic bas
         if valeur_detect < SEUIL_BAS and data["on/off"]: 
             print("clic bas")
+            data["test_joystick"] = "down"
             changeMode("down")
             
             while valeur_detect < SEUIL_BAS:
@@ -72,6 +75,7 @@ def loopY():
         #clic haut
         if valeur_detect > SEUIL_HAUT and data["on/off"]: 
             print("clic haut")
+            data["test_joystick"] = "up"
             changeMode("up")
             
             while valeur_detect > SEUIL_HAUT:
@@ -115,5 +119,6 @@ def loopZ():
             setColor(*data["current_color"])
             
         
-        #raffraichissemnt    
-        time.sleep(0.2)
+        #raffraichissemnt
+        data["bouton-alim"].wait_for_release() # pour eviter les double click inutile    
+        time.sleep(1)

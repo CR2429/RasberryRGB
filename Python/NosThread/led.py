@@ -46,10 +46,10 @@ def changeMode(direction):
     
     data["mode_active"] = True
     if data["current_index"] == 0:
-        data["mode_thread"] = threading.Thread(target=vague)
+        data["mode_thread"] = threading.Thread(target=vague, name="vague")
         data["mode_thread"].start()  
     elif data["current_index"] == 1:
-        data["mode_thread"] = threading.Thread(target=flash)
+        data["mode_thread"] = threading.Thread(target=flash, name="flash")
         data["mode_thread"].start()  
     elif data["current_index"] == 2:
         r, g, b = data["current_color"]  
