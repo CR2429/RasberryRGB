@@ -104,14 +104,14 @@ def loopZ():
             print("Eteint")
             
             #bas eteindre la led
-            data["led_alim"].off()
+            data["led-alim"].off()
             data["led"].off()
         else :
             data["on/off"] = True
             print("Allumer")
             
             #je demarre la led RGP aussi
-            data["led_alim"].on()
+            data["led-alim"].on()
             setColor(*data["current_color"])
             
         
