@@ -13,7 +13,7 @@ def loopX():
     
     while True:
         with config_data["adc_lock"]:
-            valeur_detect = adc.analogRead(2)
+            valeur_detect = adc.analogRead(0)
         
         #clic gauche
         if valeur_detect < SEUIL_GAUCHE: 
@@ -22,10 +22,10 @@ def loopX():
             
             while valeur_detect < SEUIL_GAUCHE:
                 with config_data["adc_lock"]:
-                    valeur_detect = adc.analogRead(2)
+                    valeur_detect = adc.analogRead(0)
                 time.sleep(0.2)
                 
-            time.sleep(1.5)
+            time.sleep(0.5)
         
         #clic droit
         if valeur_detect > SEUIL_DROIT: 
@@ -34,10 +34,10 @@ def loopX():
             
             while valeur_detect > SEUIL_GAUCHE:
                 with config_data["adc_lock"]:
-                    valeur_detect = adc.analogRead(2)
+                    valeur_detect = adc.analogRead(0)
                 time.sleep(0.2)
                 
-            time.sleep(1.5)
+            time.sleep(0.5)
         
         #temps de recharge
         time.sleep(0.2)
@@ -53,7 +53,7 @@ def loopY():
     
     while True:
         with config_data["adc_lock"]:
-            valeur_detect = adc.analogRead(7)
+            valeur_detect = adc.analogRead(1)
         
         #clic bas
         if valeur_detect < SEUIL_BAS: 
@@ -62,10 +62,10 @@ def loopY():
             
             while valeur_detect < SEUIL_BAS:
                 with config_data["adc_lock"]:
-                    valeur_detect = adc.analogRead(7)
+                    valeur_detect = adc.analogRead(1)
                 time.sleep(0.2)
                 
-            time.sleep(1.5)
+            time.sleep(0.5)
         
         #clic haut
         if valeur_detect > SEUIL_HAUT: 
@@ -74,10 +74,10 @@ def loopY():
             
             while valeur_detect > SEUIL_HAUT:
                 with config_data["adc_lock"]:
-                    valeur_detect = adc.analogRead(7)
+                    valeur_detect = adc.analogRead(1)
                 time.sleep(0.2)
                 
-            time.sleep(1.5)
+            time.sleep(0.5)
         
         #temps de recharge
         time.sleep(0.2)

@@ -24,40 +24,40 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
 
 
     def do_POST(self):
-    print("Requête POST détectée")
-    
-    content_length = int(self.headers['Content-Length'])
+        print("Requête POST détectée")
+        
+        content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
-    
-    try:
-        received_data = json.loads(post_data.decode('utf-8'))
-        print("Données reçues :", received_data)
         
-        if 'current_color' in received_data:
-            data['current_color'] = received_data['current_color']
-        if 'mode_thread' in received_data:
-            data['mode_thread'] = received_data['mode_thread']
-        if 'mode_active' in received_data:
-            data['mode_active'] = received_data['mode_active']
+        try:
+            received_data = json.loads(post_data.decode('utf-8'))
+            print("Données reçues :", received_data)
+            
+            if 'current_color' in received_data:
+                data['current_color'] = received_data['current_color']
+            if 'mode_thread' in received_data:
+                data['mode_thread'] = received_data['mode_thread']
+            if 'mode_active' in received_data:
+                data['mode_active'] = received_data['mode_active']
+            
+            # Prépare une réponse
+            response = {
+                'message': 'Données reçues et traitées avec succès',
+                'updated_data': data
+            }
+            
+            # Envoie une réponse de succès
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
         
-        # Prépare une réponse
-        response = {
-            'message': 'Données reçues et traitées avec succès',
-            'updated_data': data
-        }
+        except json.JSONDecodeError:
+            # Si les données reçues ne sont pas un JSON valide, envoie une réponse d'erreur
+            self.send_response(400)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {'erreur': 'JSON invalide'}
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
         
-        # Envoie une réponse de succès
-        self.send_response(200)
-        self.send_header("Content-type", "application/json")
-        self.end_headers()
-        self.wfile.write(bytes(json.dumps(response), "utf-8"))
-    
-    except json.JSONDecodeError:
-        # Si les données reçues ne sont pas un JSON valide, envoie une réponse d'erreur
-        self.send_response(400)
-        self.send_header("Content-type", "application/json")
-        self.end_headers()
-        response = {'erreur': 'JSON invalide'}
-        self.wfile.write(bytes(json.dumps(response), "utf-8"))
-    
-    return
+        return
