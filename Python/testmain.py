@@ -6,15 +6,25 @@ class TestGPIOFunctions(unittest.TestCase):
 
     def test_joystick_left(self):
         if data["joystick_test"] == "left":
+            current_color_normalized = (
+                data["current_color"][0] / 255.0,
+                data["current_color"][1] / 255.0,
+                data["current_color"][2] / 255.0
+            )
             couleur = (data["led"].red, data["led"].green, data["led"].blue)
-            self.assertEqual(couleur, data["current_color"])
+            self.assertEqual(couleur, current_color_normalized)
             
             data["joystick_test"] = "none"
     
     def test_joystick_right(self):
         if data["joystick_test"] == "right":
+            current_color_normalized = (
+                data["current_color"][0] / 255.0,
+                data["current_color"][1] / 255.0,
+                data["current_color"][2] / 255.0
+            )
             couleur = (data["led"].red, data["led"].green, data["led"].blue)
-            self.assertEqual(couleur, data["current_color"])
+            self.assertEqual(couleur, current_color_normalized)
             
             data["joystick_test"] = "none"
                 

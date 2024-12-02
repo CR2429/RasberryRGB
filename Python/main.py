@@ -40,14 +40,16 @@ def calibrage_adc():
 
 def runTests():
     while True:
-        #run les tests
-        test = unittest.TestLoader().loadTestsFromTestCase(Test)
-        result = unittest.TextTestRunner().run(test)
-        #log
-        print(result)
-        #with open("test_output.log", "w", encoding="utf-8") as file:
-        #    runner = unittest.TextTestRunner(stream=file, verbosity=2)
-        #    runner.run(test)
+        if data["joystick_test"] != "none":
+            #run les tests
+            test = unittest.TestLoader().loadTestsFromTestCase(Test)
+            result = unittest.TextTestRunner().run(test)
+            
+            #log
+            print(result)
+            #with open("test_output.log", "w", encoding="utf-8") as file:
+            #    runner = unittest.TextTestRunner(stream=file, verbosity=2)
+            #    runner.run(test)
  
         time.sleep(1)
 
