@@ -1,35 +1,32 @@
 import unittest
-from unittest.mock import MagicMock, patch
-import time
+from unittest.mock import patch
 import gpiozero
-
-def tearDown(self):
-    gpiozero.Device.pin_factory.clear()  # Libère les broches GPIO après chaque test
 
 
 class TestGPIOFunctions(unittest.TestCase):
 
+    def setUp(self):
+        # Réinitialiser tous les périphériques GPIO
+        gpiozero.Device.pin_factory.clear()
+    
     @patch('gpiozero.LED')
     @patch('gpiozero.Button')
     @patch('config.config_data')
-    def test_button_press(self, mock_config_data, MockButton, MockLED):
+    def test_button_press(self, mock_config_data):
         # Simuler un appui sur le bouton
-        mock_button = MockButton.return_value
-        mock_button.is_pressed = True  # Simuler que le bouton est pressé
-
-        # Simuler l'action sur la LED
-        mock_led = MockLED.return_value
-        mock_led.on.assert_called_once()
-        mock_led.off.assert_called_once()
-        
+        mock_config_data["bouton-alim"].wait_for_press.return_value = True
         from NosThread.loop import loopZ
-        loopZ()  # Exécution du code avec la simulation
 
-        # Vérification
-        mock_led.on.assert_called_once()  # Vérifier que la LED a été allumée
-        mock_led.off.assert_called_once()  # Vérifier que la LED a été éteinte
-        
-        tearDown()
+        # Exécution du code (en supposant que cela modifie les états de la LED)
+        loopZ()  # Exécution du thread
+
+        # Vérification des appels
+        mock_config_data["led"].on.assert_called_once()
+        mock_config_data["led-alim"].on.assert_called_once()
+
+        # Vérification de l'état après l'appui sur le bouton
+        mock_config_data["led"].off.assert_called_once()
+        mock_config_data["led-alim"].off.assert_called_once()
 
     @patch('NosThread.led.changeMode')
     @patch('config.config_data')
@@ -42,8 +39,9 @@ class TestGPIOFunctions(unittest.TestCase):
 
         # Vérifier que le mode a changé (appelle la fonction changeMode)
         mock_changeMode.assert_called_with("up")
-        
-        tearDown()
+
+        # Vérification d'autres comportements si nécessaire
+        self.assertTrue(mock_changeMode.called)  # Pour vérifier que la fonction a été appelée.
 
     @patch('NosThread.led.changeMode')
     @patch('config.config_data')
@@ -56,8 +54,9 @@ class TestGPIOFunctions(unittest.TestCase):
 
         # Vérifier que le mode a changé (appelle la fonction changeMode)
         mock_changeMode.assert_called_with("down")
-        
-        tearDown()
+
+        # Exemple d'assertion supplémentaire
+        self.assertEqual(mock_config_data["led"].is_on(), False)  # Si on attend que la LED soit éteinte
 
     @patch('NosThread.led.changeColor')
     @patch('config.config_data')
@@ -70,13 +69,14 @@ class TestGPIOFunctions(unittest.TestCase):
 
         # Vérifier que la couleur a changé (appelle la fonction changeColor)
         mock_changeColor.assert_called_with("left")
-        
-        tearDown()
+
+        # Exemple d'assertion supplémentaire
+        self.assertTrue(mock_changeColor.called)  # Vérifier si la fonction a été appelée
 
     @patch('NosThread.led.changeColor')
     @patch('config.config_data')
     def test_move_joystick_right(self, mock_config_data, mock_changeColor):
-        # Simuler un mouvement du joystick vers la droite
+         # Simuler un mouvement du joystick vers la droite
         mock_config_data["adc"].analogRead.side_effect = [200, 300]  # Valeur qui déclenche le mouvement vers la droite
         from NosThread.loop import loopX
 
@@ -84,8 +84,9 @@ class TestGPIOFunctions(unittest.TestCase):
 
         # Vérifier que la couleur a changé (appelle la fonction changeColor)
         mock_changeColor.assert_called_with("right")
-        
-        tearDown()
+
+        # Exemple d'assertion supplémentaire
+        self.assertEqual(mock_config_data["led"].is_on(), True)  # Si on attend que la LED soit allumée
 
     @patch('my_http_request_handler.MyHttpRequestHandler.send_response')
     @patch('my_http_request_handler.MyHttpRequestHandler.send_header')
@@ -105,7 +106,8 @@ class TestGPIOFunctions(unittest.TestCase):
         mock_write.assert_called_once_with(bytes(
             '{"current_color": [255, 0, 0], "mode_thread": null, "mode_active": false}', 'utf8'))
         
-        tearDown()
+        # Vérification des données retournées
+        self.assertEqual(mock_write.call_args[0][0], b'{"current_color": [255, 0, 0], "mode_thread": null, "mode_active": false}')
 
 if __name__ == '__main__':
     unittest.main()
