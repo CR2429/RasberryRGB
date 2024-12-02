@@ -89,32 +89,31 @@ def loopZ():
     thread qui gere le bouton du joystick (on/off)
     """
     #valeur
-    first_start = True
-    GPIO.setmode(GPIO.BCM)
+    data["led"].off()
     
     while True:
-        bouton = GPIO.input(22)
+        #On attend que le bouton est du joystick est appuyer
+        print("...")
+        data["bouton-alim"].wait_for_press()
+        print("Bouton appuyer")
         
-        if bouton:
-            #changer on off
-            if data["on/off"] :
-                data["on/off"] = False
-                print("Eteint")
-                
-                #bas eteindre la led
-                GPIO.output(4, 0)
-                setColor(0,0,0)
-            else :
-                data["on/off"] = True
-                print("Allumer")
-                
-                #je demarre la led RGP aussi
-                GPIO.output(4, 1)
-                setColor(*data["current_color"])
-                
-            #boucle pour eviter les erreurs
-            while bouton:
-                bouton = GPIO.input(22)
-                time.sleep(0.2)
+        #On execute le code qu'il faut executer
+        #changer on off
+        if data["on/off"] :
+            data["on/off"] = False
+            print("Eteint")
             
+            #bas eteindre la led
+            data["led-alim"].off()
+            data["led"].off()
+        else :
+            data["on/off"] = True
+            print("Allumer")
+            
+            #je demarre la led RGP aussi
+            data["led-alim"].on()
+            setColor(*data["current_color"])
+            
+        
+        #raffraichissemnt    
         time.sleep(0.2)
