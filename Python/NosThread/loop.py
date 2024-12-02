@@ -16,33 +16,29 @@ def loopX():
         with data["adc_lock"]:
             valeur_detect = adc.analogRead(0)
         
-        #regarde si la led est allumer ou pas  
-        if data["on/off"]: 
-            #clic gauche
-            if valeur_detect < SEUIL_GAUCHE: 
-                print("clic gauche")
-                changeColor("left")
-                
-                while valeur_detect < SEUIL_GAUCHE:
-                    with data["adc_lock"]:
-                        valeur_detect = adc.analogRead(0)
-                    time.sleep(0.2)
-                    
-                time.sleep(0.5)
+        #clic gauche
+        if valeur_detect < SEUIL_GAUCHE and data["on/off"]: 
+            print("clic gauche")
+            changeColor("left")
             
-            #clic droit
-            if valeur_detect > SEUIL_DROIT: 
-                print("clic droit")
-                changeColor("right")
+            while valeur_detect < SEUIL_GAUCHE:
+                with data["adc_lock"]:
+                    valeur_detect = adc.analogRead(0)
+                time.sleep(0.2)
                 
-                while valeur_detect > SEUIL_GAUCHE:
-                    with data["adc_lock"]:
-                        valeur_detect = adc.analogRead(0)
-                    time.sleep(0.2)
-                    
-                time.sleep(0.5)
-        else: #sa c'est en cas la led est etteinte
-            print("La led rgb est eteinte, vous ne pouvez pas gerer ses reglages")
+            time.sleep(0.5)
+        
+        #clic droit
+        if valeur_detect > SEUIL_DROIT and data["on/off"]: 
+            print("clic droit")
+            changeColor("right")
+            
+            while valeur_detect > SEUIL_GAUCHE:
+                with data["adc_lock"]:
+                    valeur_detect = adc.analogRead(0)
+                time.sleep(0.2)
+                
+            time.sleep(0.5)
         
         #temps de recharge
         time.sleep(0.2)
@@ -60,34 +56,30 @@ def loopY():
         with data["adc_lock"]:
             valeur_detect = adc.analogRead(1)
         
-        #regarde si la led est allumer ou pas  
-        if data["on/off"]: 
-        
-            #clic bas
-            if valeur_detect < SEUIL_BAS: 
-                print("clic bas")
-                changeMode("down")
-                
-                while valeur_detect < SEUIL_BAS:
-                    with data["adc_lock"]:
-                        valeur_detect = adc.analogRead(1)
-                    time.sleep(0.2)
-                    
-                time.sleep(0.5)
+
+        #clic bas
+        if valeur_detect < SEUIL_BAS and data["on/off"]: 
+            print("clic bas")
+            changeMode("down")
             
-            #clic haut
-            if valeur_detect > SEUIL_HAUT: 
-                print("clic haut")
-                changeMode("up")
+            while valeur_detect < SEUIL_BAS:
+                with data["adc_lock"]:
+                    valeur_detect = adc.analogRead(1)
+                time.sleep(0.2)
                 
-                while valeur_detect > SEUIL_HAUT:
-                    with data["adc_lock"]:
-                        valeur_detect = adc.analogRead(1)
-                    time.sleep(0.2)
-                    
-                time.sleep(0.5)
-        else: #sa c'est en cas la led est etteinte
-            print("La led rgb est eteinte, vous ne pouvez pas gerer ses reglages")
+            time.sleep(0.5)
+        
+        #clic haut
+        if valeur_detect > SEUIL_HAUT and data["on/off"]: 
+            print("clic haut")
+            changeMode("up")
+            
+            while valeur_detect > SEUIL_HAUT:
+                with data["adc_lock"]:
+                    valeur_detect = adc.analogRead(1)
+                time.sleep(0.2)
+                
+            time.sleep(0.5)
         
         #temps de recharge
         time.sleep(0.2)

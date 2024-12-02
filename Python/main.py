@@ -44,7 +44,6 @@ def destroy():
     Gere l'arret des processus de la puce et du joystick
     """
     config_data["adc"].close()
-    config_data["bouton"].close()
     config_data["led"].close()
     GPIO.cleanup()
     
