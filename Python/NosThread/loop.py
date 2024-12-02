@@ -89,12 +89,13 @@ def loopZ():
     thread qui gere le bouton du joystick (on/off)
     """
     #valeur
-    first_start = True
-    GPIO.setmode(GPIO.BCM)
+    data["led"].off()
     
     while True:
         #On attend que le bouton est du joystick est appuyer
-        data["bouton_alim"].wait_for_press()
+        print("...")
+        data["bouton-alim"].wait_for_press()
+        print("Bouton appuyer")
         
         #On execute le code qu'il faut executer
         #changer on off
