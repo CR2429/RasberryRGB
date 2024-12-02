@@ -6,7 +6,7 @@ from ADCDevice import ADS7830
 config_data = {
     "adc": ADS7830(),  # Cette classe contrôle la puce ADC
     "adc_lock": threading.Lock(),  # Verrou pour éviter les conflits entre threads dans la lecture de la puce ADC
-    "led": RGBLED(red=17, green=18, blue=27, active_high=True),  # Définition des pins pour RGB LED
+    "led": RGBLED(red=17, green=18, blue=27, active_high=False),  # Définition des pins pour RGB LED
     "color_list": [
         (255, 0, 0),  # Red 1
         (0, 255, 0),  # Green 2
