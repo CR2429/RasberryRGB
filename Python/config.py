@@ -27,7 +27,7 @@ config_data = {
     ],
     "mode_active": False,
     "mode_thread": None,
-    "current_index": 0,
+    "current_index": 2,
     "current_color": (255, 0, 0),  # Initialisation à la première couleur (Rouge)
     "VALEUR_CENTRAL_X": 0,
     "VALEUR_CENTRAL_Y": 0,
@@ -37,5 +37,6 @@ config_data = {
     "SEUIL_DROIT": 0,
     "on/off":False,
     "led-alim": LED(22), #led jaune mise sur la broche 15 (GPIO22)
-    "bouton-alim": Button(4) #bouton joystick mise sur la broche 7 (GPIO4)
+    "bouton-alim": Button(4), #bouton joystick mise sur la broche 7 (GPIO4)
+    "joystick_test":"none",
 }
