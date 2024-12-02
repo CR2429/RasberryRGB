@@ -49,7 +49,7 @@ def runTests():
         #    runner = unittest.TextTestRunner(stream=file, verbosity=2)
         #    runner.run(test)
  
-        time.sleep(0.1)
+        time.sleep(1)
 
 def destroy():
     """
