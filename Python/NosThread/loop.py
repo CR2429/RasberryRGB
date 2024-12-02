@@ -90,6 +90,7 @@ def loopZ():
     """
     #valeur
     first_start = True
+    GPIO.setmode(GPIO.BCM)
     
     while True:
         bouton = GPIO.input(22)
