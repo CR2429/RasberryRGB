@@ -1,9 +1,14 @@
 import unittest
 from unittest.mock import patch
+import gpiozero
 
 
 class TestGPIOFunctions(unittest.TestCase):
 
+    def setUp(self):
+        # Réinitialiser tous les périphériques GPIO
+        gpiozero.Device.pin_factory.clear()
+    
     @patch('gpiozero.LED')
     @patch('gpiozero.Button')
     @patch('config.config_data')
