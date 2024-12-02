@@ -6,3 +6,11 @@ Python/NosThread/__pycache__/loop.cpython-310.pyc
 Python/NosThread/__pycache__/loop.cpython-312.pyc
 Python/__pycache__/config.cpython-310.pyc
 Python/NosThread/__pycache__/led.cpython-310.pyc
+
+Python/__pycache__/
+
+Python/venv/
+
+Python/ADCDevice-1.0.3/
+
+Python/ADCDevice-1.0.3.tar.gz
