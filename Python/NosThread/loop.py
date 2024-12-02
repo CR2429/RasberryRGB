@@ -98,22 +98,7 @@ def loopZ():
         print("Bouton appuyer")
         
         #On execute le code qu'il faut executer
-        #changer on off
-        if data["on/off"] :
-            data["on/off"] = False
-            print("Eteint")
-            
-            #bas eteindre la led
-            data["led-alim"].off()
-            data["led"].off()
-        else :
-            data["on/off"] = True
-            print("Allumer")
-            
-            #je demarre la led RGP aussi
-            data["led-alim"].on()
-            setColor(*data["current_color"])
-            
+        on_Off()
         
         #raffraichissemnt    
         time.sleep(0.2)
