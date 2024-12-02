@@ -1,6 +1,11 @@
 import unittest
 from unittest.mock import MagicMock, patch
 import time
+import gpiozero
+
+def tearDown(self):
+    gpiozero.Device.pin_factory.clear()  # Libère les broches GPIO après chaque test
+
 
 class TestGPIOFunctions(unittest.TestCase):
 
@@ -23,6 +28,8 @@ class TestGPIOFunctions(unittest.TestCase):
         # Vérification
         mock_led.on.assert_called_once()  # Vérifier que la LED a été allumée
         mock_led.off.assert_called_once()  # Vérifier que la LED a été éteinte
+        
+        tearDown()
 
     @patch('NosThread.led.changeMode')
     @patch('config.config_data')
@@ -35,6 +42,8 @@ class TestGPIOFunctions(unittest.TestCase):
 
         # Vérifier que le mode a changé (appelle la fonction changeMode)
         mock_changeMode.assert_called_with("up")
+        
+        tearDown()
 
     @patch('NosThread.led.changeMode')
     @patch('config.config_data')
@@ -47,6 +56,8 @@ class TestGPIOFunctions(unittest.TestCase):
 
         # Vérifier que le mode a changé (appelle la fonction changeMode)
         mock_changeMode.assert_called_with("down")
+        
+        tearDown()
 
     @patch('NosThread.led.changeColor')
     @patch('config.config_data')
@@ -59,6 +70,8 @@ class TestGPIOFunctions(unittest.TestCase):
 
         # Vérifier que la couleur a changé (appelle la fonction changeColor)
         mock_changeColor.assert_called_with("left")
+        
+        tearDown()
 
     @patch('NosThread.led.changeColor')
     @patch('config.config_data')
@@ -71,6 +84,8 @@ class TestGPIOFunctions(unittest.TestCase):
 
         # Vérifier que la couleur a changé (appelle la fonction changeColor)
         mock_changeColor.assert_called_with("right")
+        
+        tearDown()
 
     @patch('my_http_request_handler.MyHttpRequestHandler.send_response')
     @patch('my_http_request_handler.MyHttpRequestHandler.send_header')
@@ -89,6 +104,8 @@ class TestGPIOFunctions(unittest.TestCase):
         # Vérifier que la réponse contient bien les informations de la LED RGB
         mock_write.assert_called_once_with(bytes(
             '{"current_color": [255, 0, 0], "mode_thread": null, "mode_active": false}', 'utf8'))
+        
+        tearDown()
 
 if __name__ == '__main__':
     unittest.main()
