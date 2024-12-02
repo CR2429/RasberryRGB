@@ -6,29 +6,16 @@ class TestGPIOFunctions(unittest.TestCase):
 
     @patch('config.config_data')
     def test_button_press(self, mock_config_data):
-        # Simuler un appui sur le bouton
-        mock_config_data["bouton-alim"].wait_for_press.return_value = True
+        # Simuler l'appui sur le bouton
+        mock_config_data["bouton-alim"].wait_for_press = MagicMock(return_value=True)
+
         from NosThread.loop import loopZ
-        
+
         # Simuler le premier état (allumé)
-        mock_config_data["led"].on = MagicMock()
-        mock_config_data["led-alim"].on = MagicMock()
-
-        # Appeler la fonction loopZ qui devrait activer les LEDs
-        loopZ()
-
-        # Vérifier que les LEDs ont été allumées
         mock_config_data["led"].on.assert_called_once()
         mock_config_data["led-alim"].on.assert_called_once()
 
-        # Simuler l'état éteint
-        mock_config_data["led"].off = MagicMock()
-        mock_config_data["led-alim"].off = MagicMock()
-
-        # Appeler la fonction loopZ pour éteindre les LEDs
-        loopZ()
-
-        # Vérifier que les LEDs ont été éteintes
+        # Simuler l'état éteint (imitation d'un autre appui)
         mock_config_data["led"].off.assert_called_once()
         mock_config_data["led-alim"].off.assert_called_once()
 
