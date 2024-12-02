@@ -8,6 +8,7 @@ import ssl
 
 #setup pin GPIO
 GPIO.cleanup()
+GPIO.setmode(GPIO.BCM) #J'utilise se mode la pour eviter les probleme avec la led rgb
 GPIO.setup(4, GPIO.IN) #config de la pin 7 (GPIO4) pour recevoir un signal d'un bouton
 GPIO.setup(22, GPIO.OUT) #config de la pin 15 (GPIO22) pour envoyer un signal on/off
 
