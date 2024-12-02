@@ -1,4 +1,4 @@
-from gpiozero import RGBLED
+from gpiozero import RGBLED, Button, LED
 import threading
 from ADCDevice import ADS7830
 
@@ -36,4 +36,6 @@ config_data = {
     "SEUIL_GAUCHE": 0,
     "SEUIL_DROIT": 0,
     "on/off":False,
+    "led-alim": LED(22), #led jaune mise sur la broche 15 (GPIO22)
+    "bouton-alim": Button(4) #bouton joystick mise sur la broche 7 (GPIO4)
 }
