@@ -4,20 +4,25 @@ import time
 
 class TestGPIOFunctions(unittest.TestCase):
 
+    @patch('gpiozero.LED')
+    @patch('gpiozero.Button')
     @patch('config.config_data')
-    def test_button_press(self, mock_config_data):
-        # Simuler l'appui sur le bouton
-        mock_config_data["bouton-alim"].wait_for_press = MagicMock(return_value=True)
+    def test_button_press(self, mock_config_data, MockButton, MockLED):
+        # Simuler un appui sur le bouton
+        mock_button = MockButton.return_value
+        mock_button.is_pressed = True  # Simuler que le bouton est pressé
 
+        # Simuler l'action sur la LED
+        mock_led = MockLED.return_value
+        mock_led.on.assert_called_once()
+        mock_led.off.assert_called_once()
+        
         from NosThread.loop import loopZ
+        loopZ()  # Exécution du code avec la simulation
 
-        # Simuler le premier état (allumé)
-        mock_config_data["led"].on.assert_called_once()
-        mock_config_data["led-alim"].on.assert_called_once()
-
-        # Simuler l'état éteint (imitation d'un autre appui)
-        mock_config_data["led"].off.assert_called_once()
-        mock_config_data["led-alim"].off.assert_called_once()
+        # Vérification
+        mock_led.on.assert_called_once()  # Vérifier que la LED a été allumée
+        mock_led.off.assert_called_once()  # Vérifier que la LED a été éteinte
 
     @patch('NosThread.led.changeMode')
     @patch('config.config_data')
