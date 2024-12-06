@@ -4,19 +4,25 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.GridLayout
-import com.skydoves.colorpickerview.ColorEnvelope
-import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
-import com.skydoves.colorpickerview.ColorPickerDialog
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.skydoves.colorpickerview.ColorEnvelope
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
-class MainActivity : AppCompatActivity() {
+class ModifyActivity : AppCompatActivity() {
 
     private val buttonList = mutableListOf<Button>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_modify)
+
 
         val gridLayout: GridLayout = findViewById(R.id.gridLayout)
 
@@ -24,8 +30,8 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until 20) {
             val button = Button(this).apply {
                 text = ""
-                background = ContextCompat.getDrawable(this@MainActivity, R.drawable.button_rond)
-
+                background = ContextCompat.getDrawable(this@ModifyActivity, R.drawable.button_rond)
+                setOnClickListener { openColorPicker(this) }
             }
 
             // Définir les paramètres
@@ -50,6 +56,22 @@ class MainActivity : AppCompatActivity() {
         saveButtonColors()
     }
 
+
+    // Fonction pour ouvrir le sélecteur de couleurs
+    private fun openColorPicker(button: Button) {
+        ColorPickerDialog.Builder(this)
+            .setTitle("Choisissez une couleur")
+            .setPreferenceName("ColorPickerDialog")
+            .setPositiveButton("Sélectionner", ColorEnvelopeListener { envelope: ColorEnvelope, _: Boolean ->
+                // Appliquer la couleur sélectionnée au bouton
+                button.setBackgroundColor(envelope.color)
+            })
+            .setNegativeButton("Annuler") { dialogInterface, _ -> dialogInterface.dismiss() }
+            .attachAlphaSlideBar(true) // Afficher la barre de transparence (optionnel)
+            .attachBrightnessSlideBar(true) // Afficher la barre de luminosité (optionnel)
+            .show()
+    }
+
     private fun saveButtonColors() {
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -67,4 +89,5 @@ class MainActivity : AppCompatActivity() {
             button.setBackgroundColor(color)
         }
     }
+
 }
