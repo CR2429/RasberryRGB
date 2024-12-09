@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
     private fun initializeButtons() {
         buttonList.clear()
         buttonList.addAll(listOf(
-            findViewById(R.id.button_0),
             findViewById(R.id.button_1),
             findViewById(R.id.button_2),
             findViewById(R.id.button_3),
@@ -61,9 +60,6 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.button_14),
             findViewById(R.id.button_15),
             findViewById(R.id.button_16),
-            findViewById(R.id.button_17),
-            findViewById(R.id.button_18),
-            findViewById(R.id.button_19)
         ))
     }
 
@@ -81,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
         buttonList.forEachIndexed { index, button ->
             val color = sharedPreferences.getInt("button_$index", Color.LTGRAY)
-            button.setBackgroundColor(color)
+            val originalDrawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
         }
     }
 }

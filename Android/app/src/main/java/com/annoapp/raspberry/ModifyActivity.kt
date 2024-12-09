@@ -15,7 +15,8 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class ModifyActivity : AppCompatActivity() {
 
-    private val buttonList = mutableListOf<Button>()
+    private lateinit var buttonList: List<Button>
+    private var buttonIndex: Int = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,31 +24,18 @@ class ModifyActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_modify)
 
+        buttonIndex = intent.getIntExtra("button_index", -1)
 
-        val gridLayout: GridLayout = findViewById(R.id.gridLayout)
-
-        // Création de 20 boutons dynamiques
-        for (i in 0 until 20) {
-            val button = Button(this).apply {
-                text = ""
-                background = ContextCompat.getDrawable(this@ModifyActivity, R.drawable.button_rond)
-                setOnClickListener { openColorPicker(this) }
-            }
-
-            // Définir les paramètres
-            val params = GridLayout.LayoutParams().apply {
-                width = 230
-                height = 250
-                marginStart = 8
-                marginEnd = 8
-                topMargin = 20
-
-            }
-            button.layoutParams = params
-
-            gridLayout.addView(button)
-            buttonList.add(button)
+        buttonList = (1..16).map { index ->
+            findViewById<Button>(resources.getIdentifier("button_$index", "id", packageName))
         }
+
+        buttonList.forEach { button ->
+            button.setOnClickListener {
+                openColorPicker(button)
+            }
+        }
+
         loadButtonColors()
 
     }
