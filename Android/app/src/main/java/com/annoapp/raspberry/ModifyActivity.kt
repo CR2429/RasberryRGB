@@ -51,8 +51,10 @@ class ModifyActivity : AppCompatActivity() {
             .setTitle("Choisissez une couleur")
             .setPreferenceName("ColorPickerDialog")
             .setPositiveButton("Sélectionner", ColorEnvelopeListener { envelope: ColorEnvelope, _: Boolean ->
-                // Appliquer la couleur sélectionnée au bouton
-                button.setBackgroundColor(envelope.color)
+                // Preserve the original drawable's shape while changing its color
+                val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
+                drawable?.setTint(envelope.color)
+                button.background = drawable
             })
             .setNegativeButton("Annuler") { dialogInterface, _ -> dialogInterface.dismiss() }
             .attachAlphaSlideBar(true) // Afficher la barre de transparence (optionnel)
@@ -74,7 +76,9 @@ class ModifyActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
         buttonList.forEachIndexed { index, button ->
             val color = sharedPreferences.getInt("button_$index", Color.LTGRAY)
-            button.setBackgroundColor(color)
+            val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
+            drawable?.setTint(color)
+            button.background = drawable
         }
     }
 

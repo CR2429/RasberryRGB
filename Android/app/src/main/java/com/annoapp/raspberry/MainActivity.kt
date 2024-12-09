@@ -1,5 +1,6 @@
 package com.annoapp.raspberry
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
@@ -14,9 +15,18 @@ class MainActivity : AppCompatActivity() {
 
     private val buttonList = mutableListOf<Button>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val buttonRainbow: Button = findViewById(R.id.button_rainbow)
+        val buttonModifier: Button = findViewById(R.id.button_modifier)
+        val buttonFlash: Button = findViewById(R.id.button_flash)
+        val buttonVague: Button = findViewById(R.id.button_vague)
+        val buttonPower: Button = findViewById(R.id.button_power)
+        val buttonFull: Button = findViewById(R.id.button_full)
+
 
         initializeButtons()
 
@@ -24,6 +34,11 @@ class MainActivity : AppCompatActivity() {
         // Charger les couleurs des boutons
         loadButtonColors()
 
+
+        buttonModifier.setOnClickListener {
+            val intent = Intent(this, ModifyActivity::class.java)
+            startActivity(intent)
+        }
 
         // Ajouter des événements de clic pour chaque bouton
         buttonList.forEachIndexed { index, button ->
@@ -66,8 +81,10 @@ class MainActivity : AppCompatActivity() {
     private fun saveButtonColors() {
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
+
         buttonList.forEachIndexed { index, button ->
-            val color = (button.background as? android.graphics.drawable.ColorDrawable)?.color ?: Color.LTGRAY
+            val color = (button.background as? android.graphics.drawable.ShapeDrawable)
+                ?.paint?.color ?: Color.LTGRAY
             editor.putInt("button_$index", color)
         }
         editor.apply()
@@ -75,9 +92,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadButtonColors() {
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
+
         buttonList.forEachIndexed { index, button ->
             val color = sharedPreferences.getInt("button_$index", Color.LTGRAY)
-            val originalDrawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
+            val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)?.mutate()
+            if (drawable is android.graphics.drawable.ShapeDrawable) {
+                drawable.paint.color = color
+            }
+            button.background = drawable
         }
     }
 }
