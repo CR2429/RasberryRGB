@@ -27,12 +27,15 @@ class MainActivity : AppCompatActivity() {
         val buttonPower: Button = findViewById(R.id.button_power)
         val buttonFull: Button = findViewById(R.id.button_full)
 
+        buttonRainbow.backgroundTintList = null
+        buttonFlash.backgroundTintList = null
+        buttonVague.backgroundTintList = null
+        buttonPower.backgroundTintList = null
+        buttonFull.backgroundTintList = null
 
         initializeButtons()
 
 
-        // Charger les couleurs des boutons
-        loadButtonColors()
 
 
         buttonModifier.setOnClickListener {
@@ -40,19 +43,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Ajouter des événements de clic pour chaque bouton
-        buttonList.forEachIndexed { index, button ->
-            button.setOnClickListener {
-
-
-            }
+        buttonList.forEach { button ->
+            button.backgroundTintList = null
         }
 
 
     }
     override fun onPause() {
         super.onPause()
-        saveButtonColors()
     }
 
 
@@ -78,28 +76,5 @@ class MainActivity : AppCompatActivity() {
         ))
     }
 
-    private fun saveButtonColors() {
-        val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
 
-        buttonList.forEachIndexed { index, button ->
-            val color = (button.background as? android.graphics.drawable.ShapeDrawable)
-                ?.paint?.color ?: Color.LTGRAY
-            editor.putInt("button_$index", color)
-        }
-        editor.apply()
-    }
-
-    private fun loadButtonColors() {
-        val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
-
-        buttonList.forEachIndexed { index, button ->
-            val color = sharedPreferences.getInt("button_$index", Color.LTGRAY)
-            val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)?.mutate()
-            if (drawable is android.graphics.drawable.ShapeDrawable) {
-                drawable.paint.color = color
-            }
-            button.background = drawable
-        }
-    }
 }
