@@ -18,36 +18,53 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val gridLayout: GridLayout = findViewById(R.id.gridLayout)
+        initializeButtons()
 
-        // Création de 20 boutons dynamiques
-        for (i in 0 until 20) {
-            val button = Button(this).apply {
-                text = ""
-                background = ContextCompat.getDrawable(this@MainActivity, R.drawable.button_rond)
 
-            }
-
-            // Définir les paramètres
-            val params = GridLayout.LayoutParams().apply {
-                width = 230
-                height = 250
-                marginStart = 8
-                marginEnd = 8
-                topMargin = 20
-
-            }
-            button.layoutParams = params
-
-            gridLayout.addView(button)
-            buttonList.add(button)
-        }
+        // Charger les couleurs des boutons
         loadButtonColors()
+
+
+        // Ajouter des événements de clic pour chaque bouton
+        buttonList.forEachIndexed { index, button ->
+            button.setOnClickListener {
+
+
+            }
+        }
+
 
     }
     override fun onPause() {
         super.onPause()
         saveButtonColors()
+    }
+
+
+    private fun initializeButtons() {
+        buttonList.clear()
+        buttonList.addAll(listOf(
+            findViewById(R.id.button_0),
+            findViewById(R.id.button_1),
+            findViewById(R.id.button_2),
+            findViewById(R.id.button_3),
+            findViewById(R.id.button_4),
+            findViewById(R.id.button_5),
+            findViewById(R.id.button_6),
+            findViewById(R.id.button_7),
+            findViewById(R.id.button_8),
+            findViewById(R.id.button_9),
+            findViewById(R.id.button_10),
+            findViewById(R.id.button_11),
+            findViewById(R.id.button_12),
+            findViewById(R.id.button_13),
+            findViewById(R.id.button_14),
+            findViewById(R.id.button_15),
+            findViewById(R.id.button_16),
+            findViewById(R.id.button_17),
+            findViewById(R.id.button_18),
+            findViewById(R.id.button_19)
+        ))
     }
 
     private fun saveButtonColors() {

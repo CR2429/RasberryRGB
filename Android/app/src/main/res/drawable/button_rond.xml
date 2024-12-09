@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#E2E1E1" /> <!-- Default button color -->
-    <corners android:radius="500dp" />  <!-- Makes it circular -->
+    <solid android:color="#E2E1E1" />
+    <corners android:radius="75dp" />
+
+
     <stroke
-        android:width="2dp"
-        android:color="#FFFFFF" /> <!-- Optional: Add a border -->
+        android:width="45dp"
+        android:color="#000000" />
 </shape>
