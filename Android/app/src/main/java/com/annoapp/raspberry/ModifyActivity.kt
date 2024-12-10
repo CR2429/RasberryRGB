@@ -15,7 +15,7 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class ModifyActivity : AppCompatActivity() {
 
-    private lateinit var buttonList: List<Button>
+    private val buttonList = mutableListOf<Button>()
     private var buttonIndex: Int = -1
 
 
@@ -24,26 +24,31 @@ class ModifyActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_modify)
 
-        buttonIndex = intent.getIntExtra("button_index", -1)
+        val buttonRainbow: Button = findViewById(R.id.button_rainbow)
+        val buttonFlash: Button = findViewById(R.id.button_flash)
+        val buttonVague: Button = findViewById(R.id.button_vague)
+        val buttonPower: Button = findViewById(R.id.button_power)
+        val buttonFull: Button = findViewById(R.id.button_full)
 
-        buttonList = (1..16).map { index ->
-            findViewById<Button>(resources.getIdentifier("button_$index", "id", packageName))
-        }
+        buttonRainbow.backgroundTintList = null
+        buttonFlash.backgroundTintList = null
+        buttonVague.backgroundTintList = null
+        buttonPower.backgroundTintList = null
+        buttonFull.backgroundTintList = null
+
+        initializeButtons()
 
         buttonList.forEach { button ->
+            button.backgroundTintList = null
             button.setOnClickListener {
                 openColorPicker(button)
             }
         }
 
-        loadButtonColors()
-
     }
     override fun onPause() {
         super.onPause()
-        saveButtonColors()
     }
-
 
     // Fonction pour ouvrir le sélecteur de couleurs
     private fun openColorPicker(button: Button) {
@@ -51,7 +56,6 @@ class ModifyActivity : AppCompatActivity() {
             .setTitle("Choisissez une couleur")
             .setPreferenceName("ColorPickerDialog")
             .setPositiveButton("Sélectionner", ColorEnvelopeListener { envelope: ColorEnvelope, _: Boolean ->
-                // Preserve the original drawable's shape while changing its color
                 val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
                 drawable?.setTint(envelope.color)
                 button.background = drawable
@@ -62,24 +66,29 @@ class ModifyActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun saveButtonColors() {
-        val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        buttonList.forEachIndexed { index, button ->
-            val color = (button.background as? android.graphics.drawable.ColorDrawable)?.color ?: Color.LTGRAY
-            editor.putInt("button_$index", color)
-        }
-        editor.apply()
+    private fun initializeButtons() {
+        buttonList.clear()
+        buttonList.addAll(listOf(
+            findViewById(R.id.button_1),
+            findViewById(R.id.button_2),
+            findViewById(R.id.button_3),
+            findViewById(R.id.button_4),
+            findViewById(R.id.button_5),
+            findViewById(R.id.button_6),
+            findViewById(R.id.button_7),
+            findViewById(R.id.button_8),
+            findViewById(R.id.button_9),
+            findViewById(R.id.button_10),
+            findViewById(R.id.button_11),
+            findViewById(R.id.button_12),
+            findViewById(R.id.button_13),
+            findViewById(R.id.button_14),
+            findViewById(R.id.button_15),
+            findViewById(R.id.button_16),
+        ))
     }
 
-    private fun loadButtonColors() {
-        val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
-        buttonList.forEachIndexed { index, button ->
-            val color = sharedPreferences.getInt("button_$index", Color.LTGRAY)
-            val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
-            drawable?.setTint(color)
-            button.background = drawable
-        }
-    }
+
+
 
 }

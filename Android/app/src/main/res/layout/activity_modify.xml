@@ -12,11 +12,12 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_margin="8dp"
-        android:background="@drawable/button_rond"
+        android:background="@drawable/button_power"
+        android:drawableTop="@drawable/baseline_power_settings_new_24"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_rainbow"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_flash"
@@ -24,10 +25,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
-        android:text=""
+        android:text="@string/flash"
+        android:textColor="@color/black"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/button_1"
         app:layout_constraintRight_toLeftOf="@id/button_vague"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_vague"
@@ -35,10 +38,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
-        android:text=""
+        android:text="@string/vague"
+        android:textColor="@color/black"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/button_2"
         app:layout_constraintRight_toLeftOf="@id/button_full"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_full"
@@ -46,21 +51,23 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
-        android:text=""
+        android:text="@string/full"
+        android:textColor="@color/black"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/button_3"
         app:layout_constraintRight_toLeftOf="@id/button_rainbow"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_rainbow"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_margin="8dp"
-        android:background="@drawable/button_rond"
+        android:background="@drawable/rainbow"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_4"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <!-- 2e Rangée -->
     <Button
@@ -69,10 +76,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_5"
         app:layout_constraintRight_toLeftOf="@id/button_2"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_2"
@@ -80,10 +89,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_6"
         app:layout_constraintRight_toLeftOf="@id/button_3"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_3"
@@ -91,10 +102,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_7"
         app:layout_constraintRight_toLeftOf="@id/button_4"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_4"
@@ -102,10 +115,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_8"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <!-- 3e Rangée-->
     <Button
@@ -114,10 +129,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_9"
         app:layout_constraintRight_toLeftOf="@id/button_6"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_6"
@@ -125,10 +142,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_10"
         app:layout_constraintRight_toLeftOf="@id/button_7"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_7"
@@ -136,10 +155,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_11"
         app:layout_constraintRight_toLeftOf="@id/button_8"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_8"
@@ -147,10 +168,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_12"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
     <!-- 4e Rangée -->
     <Button
         android:id="@+id/button_9"
@@ -158,10 +181,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_13"
         app:layout_constraintRight_toLeftOf="@id/button_10"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_10"
@@ -169,10 +194,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_14"
         app:layout_constraintRight_toLeftOf="@id/button_11"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_11"
@@ -180,10 +207,12 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_15"
         app:layout_constraintRight_toLeftOf="@id/button_12"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_12"
@@ -191,43 +220,51 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/button_16"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="0.2" />
     <!-- 5e Rangée -->
     <Button
         android:id="@+id/button_13"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_margin="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/button_14"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintBottom_toBottomOf="@+id/button_14"
+        app:layout_constraintEnd_toStartOf="@+id/button_14"
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_14"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_margin="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/button_15"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintBottom_toBottomOf="@+id/button_15"
+        app:layout_constraintEnd_toStartOf="@+id/button_15"
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_15"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_margin="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/button_16"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintBottom_toBottomOf="@+id/button_16"
+        app:layout_constraintEnd_toStartOf="@+id/button_16"
+        app:layout_constraintWidth_percent="0.2" />
 
     <Button
         android:id="@+id/button_16"
@@ -235,9 +272,21 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         android:background="@drawable/button_rond"
+        android:drawableTop="@drawable/pencil_edit_button"
+        android:paddingTop="18dp"
         android:text=""
+        app:layout_constraintBottom_toTopOf="@id/button_Sauvegarder"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <Button
+        android:id="@+id/button_Sauvegarder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sauvegarder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_percent="0.2"/>
+        tools:layout_editor_absoluteX="159dp"
+        tools:layout_editor_absoluteY="675dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
