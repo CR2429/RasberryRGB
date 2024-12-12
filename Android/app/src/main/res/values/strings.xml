@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyLed</string>
+    <string name="settings">Reglage</string>
 </resources>
