@@ -19,13 +19,13 @@ class MainActivity : AppCompatActivity() {
 
     private val buttonList = mutableListOf<Button>()
 
-    /** Surcharge pour la creation du menu */
+    // Surcharge pour la creation du menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
-    /** Surcharge des interactions des items du menu */
+    // Surcharge des interactions des items du menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.menuSettings -> {

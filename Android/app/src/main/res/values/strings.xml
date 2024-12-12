@@ -12,4 +12,5 @@
     <string name="notif">Notification</string>
     <string name="switch_on">Activer</string>
     <string name="switch_off">Desactiver</string>
+    <string name="close">Fermer</string>
 </resources>
