@@ -5,4 +5,9 @@
         android:title="@string/settings"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/menuModifier"
+        android:title="@string/edit"
+        app:showAsAction="never"
+        />
 </menu>

@@ -5,4 +5,11 @@
     <string name="full">Full</string>
     <string name="sauvegarder">Sauvegarder</string>
     <string name="settings">Reglage</string>
+    <string name="edit">Modifier</string>
+    <string name="connection">Connexion</string>
+    <string name="ip_adress">Adresse IP</string>
+    <string name="port">Port</string>
+    <string name="notif">Notification</string>
+    <string name="switch_on">Activer</string>
+    <string name="switch_off">Desactiver</string>
 </resources>
