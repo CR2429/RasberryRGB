@@ -8,6 +8,26 @@ def setColor(r_val,g_val,b_val):
     data["led"].green = g_val/255
     data["led"].blue = b_val/255 
 
+
+def on_Off()
+  """
+    Change l'état on/off et met à jour les la LED RGB et la LED jaune.
+    """
+    if data["on/off"]:
+        data["on/off"] = False
+        print("Éteint")
+        
+        # Éteindre les LED
+        data["led-alim"].off()
+        data["led"].off()
+    else:
+        data["on/off"] = True
+        print("Allumé")
+        
+        # Allumer les LED et définir la couleur RGB
+        data["led-alim"].on()
+        setColor(*data["current_color"])
+
 def changeColor(direction):
     #recuperer les valeurs
     color_list = data["color_list"]

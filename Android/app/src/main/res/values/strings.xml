@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">MyLed</string>
+    <string name="flash">Flash</string>
+    <string name="vague">Vague</string>
+    <string name="full">Full</string>
+    <string name="sauvegarder">Sauvegarder</string>
     <string name="settings">Reglage</string>
 </resources>
