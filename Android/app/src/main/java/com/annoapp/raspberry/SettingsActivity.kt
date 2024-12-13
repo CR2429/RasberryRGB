@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.SharedPreferences
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -14,6 +15,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.annoapp.raspberry.databinding.ActivitySettingsBinding
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import java.lang.Exception
+import java.lang.reflect.Executable
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var settings: SharedPreferences
@@ -92,8 +98,50 @@ class SettingsActivity : AppCompatActivity() {
     //tente de se connecter au rasberry
     fun tentativeDeConnection() {
         //check si les inputs sont remplit de quelque chose
-        val noErreur = true
+        var noErreur = true
 
-        if (inputIP.text.isNullOrEmpty())
+        if (inputIP.text.isNullOrEmpty()) {
+            Toast.makeText(this,"Vous n'avez pas mis d'addresse IP", Toast.LENGTH_SHORT).show()
+            noErreur = false
+        }
+        if (inputPort.text.isNullOrEmpty()) {
+            Toast.makeText(this,"Vous n'avez pas mis de Port", Toast.LENGTH_SHORT).show()
+            noErreur = false
+        }
+
+        if (noErreur) {
+            val ip = inputIP.text.toString()
+            val port = inputPort.text.toString()
+            val url = "https://${ip}:${port}"
+            val reponse = sendGetForTest(url)
+
+            if (reponse==true) {
+                Toast.makeText(this, "Connexion reussis", Toast.LENGTH_SHORT).show()
+                settings.edit().putString("IP",inputIP.text.toString()).apply()
+                settings.edit().putString("PORT",inputPort.text.toString()).apply()
+            }
+        }
+
+    }
+    private fun sendGetForTest(stUrl: String): Boolean? {
+        val client = OkHttpClient()
+        val request = Request.Builder().url(stUrl).build()
+
+        return try {
+            client.newCall(request).execute().use { response: Response ->
+                if (!response.isSuccessful) {
+                    Log.e("ERREUR", "Erreur de connexion : ${response.code}")
+                    Toast.makeText(this, "Erreur de connexion : ${response.code}", Toast.LENGTH_SHORT).show()
+                    null
+                } else {
+                    true//retourne true
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("ERREUR", e.toString())
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
+            null
+        }
     }
 }
