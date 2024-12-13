@@ -19,7 +19,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import java.lang.Exception
-import java.lang.reflect.Executable
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var settings: SharedPreferences
@@ -80,7 +79,7 @@ class SettingsActivity : AppCompatActivity() {
 
     // Surcharge pour la creation du menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_settings, menu)
+        menuInflater.inflate(R.menu.menu_close, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

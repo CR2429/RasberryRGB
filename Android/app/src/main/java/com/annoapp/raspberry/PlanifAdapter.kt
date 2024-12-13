@@ -50,7 +50,7 @@ class PlanifAdapter(private val context: Context, private val dataList: ArrayLis
 
         //Interaction
         view.setOnClickListener{
-            
+
         }
 
         return view
