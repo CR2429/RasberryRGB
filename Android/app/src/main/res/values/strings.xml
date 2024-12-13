@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">MyLed</string>
+    <string name="flash">Flash</string>
+    <string name="vague">Vague</string>
+    <string name="full">Full</string>
+    <string name="sauvegarder">Sauvegarder</string>
+    <string name="settings">Reglage</string>
+    <string name="edit">Modifier</string>
+    <string name="connection">Connexion</string>
+    <string name="ip_adress">Adresse IP</string>
+    <string name="port">Port</string>
+    <string name="notif">Notification</string>
+    <string name="switch_on">Activer</string>
+    <string name="switch_off">Desactiver</string>
+    <string name="close">Fermer</string>
 </resources>

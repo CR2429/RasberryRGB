@@ -33,19 +33,23 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
             received_data = json.loads(post_data.decode('utf-8'))
             print("Données reçues :", received_data)
             
-            if 'current_color' in received_data:
-                data['current_color'] = received_data['current_color']
-            if 'mode_thread' in received_data:
-                data['mode_thread'] = received_data['mode_thread']
-            if 'mode_active' in received_data:
-                data['mode_active'] = received_data['mode_active']
+            # Appeler la méthode on_off si la clé 'toggle' est présente et vraie
+            if 'toggle' in received_data and received_data['toggle']:
+                print("Basculement on/off déclenché via POST")
+                on_off()
             
-            # Prépare une réponse
-            response = {
-                'message': 'Données reçues et traitées avec succès',
-                'updated_data': data
-            }
-            
+            # Vérifier si l'état est "On" avant de traiter d'autres données
+            if data["on/off"]:
+                if 'current_color' in received_data:
+                    data['current_color'] = received_data['current_color']
+                if 'mode_thread' in received_data:
+                    data['mode_thread'] = received_data['mode_thread']
+                if 'mode_active' in received_data:
+                    data['mode_active'] = received_data['mode_active']
+                print("Données mises à jour :", data)
+            else:
+                print("L'état est Off, aucune donnée supplémentaire traitée.")
+                
             # Envoie une réponse de succès
             self.send_response(200)
             self.send_header("Content-type", "application/json")
