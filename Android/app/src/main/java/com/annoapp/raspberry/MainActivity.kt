@@ -18,6 +18,7 @@ import android.view.MenuItem
 class MainActivity : AppCompatActivity() {
 
     private val buttonList = mutableListOf<Button>()
+    
 
     // Surcharge pour la creation du menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -60,10 +62,20 @@ class MainActivity : AppCompatActivity() {
 
         initializeButtons()
 
+        applySavedButtonColors()
+
+
+
         buttonList.forEach { button ->
             button.backgroundTintList = null
         }
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        applySavedButtonColors()
 
     }
     override fun onPause() {
@@ -118,9 +130,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun applySavedButtonColors() {
+        val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
 
+        buttonList.forEach { button ->
+            val buttonId = resources.getResourceEntryName(button.id)
 
+            // Récupérer la couleur enregistrée sous forme d'entier
+            val color = sharedPreferences.getInt(buttonId, Color.TRANSPARENT)
 
+            if (color != Color.TRANSPARENT) {
+                val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
+                drawable?.setTint(color)
+                button.background = drawable
+            }
+        }
+    }
 
 
 }
