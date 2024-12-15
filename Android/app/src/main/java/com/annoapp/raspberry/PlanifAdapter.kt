@@ -1,6 +1,5 @@
 package com.annoapp.raspberry
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.widget.BaseAdapter
 import android.widget.Switch
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import java.text.FieldPosition
 
 @RequiresApi(Build.VERSION_CODES.O)
 class PlanifAdapter(private val context: Context, private val dataList: ArrayList<Planif>): BaseAdapter() {
@@ -32,7 +30,7 @@ class PlanifAdapter(private val context: Context, private val dataList: ArrayLis
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.lists_layout, parent, false)
 
         //identifier mes elements
-        val TvTitre = view.findViewById<TextView>(R.id.TvTitre)
+        val TvTitre = view.findViewById<TextView>(R.id.TvTitreForm)
         val TvCommande = view.findViewById<TextView>(R.id.TvCommande)
         val TvHeure = view.findViewById<TextView>(R.id.TvHeure)
         val switch = view.findViewById<Switch>(R.id.SActif)
