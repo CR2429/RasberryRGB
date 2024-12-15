@@ -18,6 +18,7 @@ import android.view.MenuItem
 class MainActivity : AppCompatActivity() {
 
     private val buttonList = mutableListOf<Button>()
+    
 
     // Surcharge pour la creation du menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,15 +66,16 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        buttonModifier.setOnClickListener {
-            val intent = Intent(this, ModifyActivity::class.java)
-            startActivity(intent)
-        }
-
         buttonList.forEach { button ->
             button.backgroundTintList = null
         }
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        applySavedButtonColors()
 
     }
     override fun onPause() {

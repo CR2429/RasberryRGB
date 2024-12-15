@@ -275,18 +275,9 @@
         android:drawableTop="@drawable/pencil_edit_button"
         android:paddingTop="18dp"
         android:text=""
-        app:layout_constraintBottom_toTopOf="@id/button_Sauvegarder"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintWidth_percent="0.2" />
 
-    <Button
-        android:id="@+id/button_Sauvegarder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sauvegarder"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="675dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

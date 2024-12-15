@@ -1,8 +1,11 @@
 package com.annoapp.raspberry
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.GridLayout
 import androidx.activity.enableEdgeToEdge
@@ -20,7 +23,21 @@ class ModifyActivity : AppCompatActivity() {
     private var buttonIndex: Int = -1
     private val buttonColorMap = mutableMapOf<String, Int>()
 
+    // Surcharge pour la creation du menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_modif, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
+    // Surcharge des interactions des items du menu
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menuClose -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,6 +66,7 @@ class ModifyActivity : AppCompatActivity() {
         }
 
     }
+
     override fun onPause() {
         super.onPause()
     }
@@ -93,11 +111,12 @@ class ModifyActivity : AppCompatActivity() {
             findViewById(R.id.button_13),
             findViewById(R.id.button_14),
             findViewById(R.id.button_15),
-            findViewById(R.id.button_16),
+            findViewById(R.id.button_16)
         ))
 
         buttonList.forEach { button ->
-            val savedColor = getButtonColorById(button) // Charger la couleur enregistrée
+            val savedColor = getButtonColorById(button)
+            // Applique la couleur enregistrée (si elle existe)
             if (savedColor != Color.TRANSPARENT) {
                 val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
                 drawable?.setTint(savedColor)
@@ -106,26 +125,22 @@ class ModifyActivity : AppCompatActivity() {
         }
     }
 
+
     private fun saveButtonColorById(button: Button, color: Int) {
         val buttonIdName = resources.getResourceEntryName(button.id) // Obtenir le nom de l'ID
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
-        // Enregistrer la couleur en tant qu'entier
+        // Enregistrer la couleur pour ce bouton
         editor.putInt(buttonIdName, color)
-        editor.apply()
-
-        Log.d("SharedPreferences", "Saved: Button ID = $buttonIdName, Color = $color")
+        editor.apply() // Ne pas oublier d'appliquer les changements
     }
-
-
 
 
     private fun getButtonColorById(button: Button): Int {
         val buttonIdName = resources.getResourceEntryName(button.id) // Obtenir le nom de l'ID
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
-
-        // Couleur par défaut (TRANSPARENT) si aucune donnée n'est sauvegardée
+        // Retourner la couleur enregistrée ou une couleur par défaut (TRANSPARENT)
         return sharedPreferences.getInt(buttonIdName, Color.TRANSPARENT)
     }
 
