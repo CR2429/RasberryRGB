@@ -12,11 +12,34 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import com.skydoves.colorpickerview.ColorPickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import android.view.Menu
+import android.view.MenuItem
 
 class MainActivity : AppCompatActivity() {
 
     private val buttonList = mutableListOf<Button>()
 
+    // Surcharge pour la creation du menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    // Surcharge des interactions des items du menu
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menuSettings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.menuModifier -> {
+                val intent = Intent(this, ModifyActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +47,6 @@ class MainActivity : AppCompatActivity() {
 
 
         val buttonRainbow: Button = findViewById(R.id.button_rainbow)
-        val buttonModifier: Button = findViewById(R.id.button_modifier)
         val buttonFlash: Button = findViewById(R.id.button_flash)
         val buttonVague: Button = findViewById(R.id.button_vague)
         val buttonPower: Button = findViewById(R.id.button_power)
@@ -37,14 +59,6 @@ class MainActivity : AppCompatActivity() {
         buttonFull.backgroundTintList = null
 
         initializeButtons()
-
-
-
-
-        buttonModifier.setOnClickListener {
-            val intent = Intent(this, ModifyActivity::class.java)
-            startActivity(intent)
-        }
 
         buttonList.forEach { button ->
             button.backgroundTintList = null
@@ -103,6 +117,9 @@ class MainActivity : AppCompatActivity() {
             button.backgroundTintList = ColorStateList.valueOf(colors[index])
         }
     }
+
+
+
 
 
 
