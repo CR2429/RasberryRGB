@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.widget.Button
 import android.widget.GridLayout
@@ -14,6 +15,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
+import org.json.JSONObject
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -144,6 +149,44 @@ class MainActivity : AppCompatActivity() {
                 drawable?.setTint(color)
                 button.background = drawable
             }
+        }
+    }
+
+    private fun sendPostRequest() {
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+
+        val url = URL("http://<votre_adresse_ip>:<votre_port>/")
+        val connection = url.openConnection() as HttpURLConnection
+
+        try {
+            connection.apply {
+                requestMethod = "POST"
+                doOutput = true
+                setRequestProperty("Content-Type", "application/json")
+            }
+
+            val jsonParam = JSONObject()
+            jsonParam.put("toggle", true)
+            jsonParam.put("current_color", "#FF5733")
+            jsonParam.put("mode_thread", "AUTO")
+            jsonParam.put("mode_active", true)
+
+            // Envoyer les données
+            val outputWriter = OutputStreamWriter(connection.outputStream)
+            outputWriter.write(jsonParam.toString())
+            outputWriter.flush()
+
+            // Lire la réponse
+            val responseCode = connection.responseCode
+            val responseMessage = connection.inputStream.bufferedReader().use { it.readText() }
+
+            println("Response Code: $responseCode")
+            println("Response Message: $responseMessage")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            connection.disconnect()
         }
     }
 
