@@ -39,6 +39,38 @@ class FormulairePlanifCommandeActivity : AppCompatActivity() {
         buttonList.forEach { button ->
             button.backgroundTintList = null
         }
+
+        //set action des boutons
+        buttonFlash.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("commande","flash")
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        }
+        buttonFull.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("commande","full")
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        }
+        buttonPower.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("commande","power")
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        }
+        buttonVague.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("commande","vague")
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        }
+        buttonRainbow.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("commande","arc-en-ciel")
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        }
     }
 
     // Surcharge pour la creation du menu
