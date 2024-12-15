@@ -8,8 +8,11 @@ import java.sql.Time
 import java.util.UUID;
 
 @RequiresApi(Build.VERSION_CODES.O)
-class Planif(private var Titre: String, private var Heure: Time, private var Commande: String, private var Color: String, private var Actif: Boolean) :Serializable {
+class Planif(private var Actif: Boolean) :Serializable {
     //Propriete
+    private lateinit var Titre: String
+    private lateinit var Heure: Time
+    private lateinit var Commande: String
     private val ID = UUID.randomUUID().toString();
 
     // get-set
@@ -33,12 +36,6 @@ class Planif(private var Titre: String, private var Heure: Time, private var Com
     }
     fun setCommande(commande : String) {
         this.Commande = commande
-    }
-    fun getColor() : String {
-        return Color
-    }
-    fun setColor(color : String) {
-        this.Color = color
     }
     fun getActif() : Boolean {
         return Actif
