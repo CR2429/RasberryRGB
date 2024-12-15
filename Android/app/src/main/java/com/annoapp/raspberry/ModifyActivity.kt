@@ -2,6 +2,7 @@ package com.annoapp.raspberry
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.GridLayout
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +18,7 @@ class ModifyActivity : AppCompatActivity() {
 
     private val buttonList = mutableListOf<Button>()
     private var buttonIndex: Int = -1
+    private val buttonColorMap = mutableMapOf<String, Int>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +40,7 @@ class ModifyActivity : AppCompatActivity() {
 
         initializeButtons()
 
+
         buttonList.forEach { button ->
             button.backgroundTintList = null
             button.setOnClickListener {
@@ -56,9 +59,15 @@ class ModifyActivity : AppCompatActivity() {
             .setTitle("Choisissez une couleur")
             .setPreferenceName("ColorPickerDialog")
             .setPositiveButton("Sélectionner", ColorEnvelopeListener { envelope: ColorEnvelope, _: Boolean ->
+                val color = envelope.color
+
+                // Appliquer la couleur au bouton
                 val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
-                drawable?.setTint(envelope.color)
+                drawable?.setTint(color)
                 button.background = drawable
+
+                // Sauvegarder la couleur sélectionnée pour le bouton
+                saveButtonColorById(button, color)
             })
             .setNegativeButton("Annuler") { dialogInterface, _ -> dialogInterface.dismiss() }
             .attachAlphaSlideBar(true) // Afficher la barre de transparence (optionnel)
@@ -86,9 +95,38 @@ class ModifyActivity : AppCompatActivity() {
             findViewById(R.id.button_15),
             findViewById(R.id.button_16),
         ))
+
+        buttonList.forEach { button ->
+            val savedColor = getButtonColorById(button) // Charger la couleur enregistrée
+            if (savedColor != Color.TRANSPARENT) {
+                val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
+                drawable?.setTint(savedColor)
+                button.background = drawable
+            }
+        }
+    }
+
+    private fun saveButtonColorById(button: Button, color: Int) {
+        val buttonIdName = resources.getResourceEntryName(button.id) // Obtenir le nom de l'ID
+        val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        // Enregistrer la couleur en tant qu'entier
+        editor.putInt(buttonIdName, color)
+        editor.apply()
+
+        Log.d("SharedPreferences", "Saved: Button ID = $buttonIdName, Color = $color")
     }
 
 
 
+
+    private fun getButtonColorById(button: Button): Int {
+        val buttonIdName = resources.getResourceEntryName(button.id) // Obtenir le nom de l'ID
+        val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
+
+        // Couleur par défaut (TRANSPARENT) si aucune donnée n'est sauvegardée
+        return sharedPreferences.getInt(buttonIdName, Color.TRANSPARENT)
+    }
 
 }

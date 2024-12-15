@@ -60,6 +60,15 @@ class MainActivity : AppCompatActivity() {
 
         initializeButtons()
 
+        applySavedButtonColors()
+
+
+
+        buttonModifier.setOnClickListener {
+            val intent = Intent(this, ModifyActivity::class.java)
+            startActivity(intent)
+        }
+
         buttonList.forEach { button ->
             button.backgroundTintList = null
         }
@@ -118,9 +127,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun applySavedButtonColors() {
+        val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
 
+        buttonList.forEach { button ->
+            val buttonId = resources.getResourceEntryName(button.id)
 
+            // Récupérer la couleur enregistrée sous forme d'entier
+            val color = sharedPreferences.getInt(buttonId, Color.TRANSPARENT)
 
+            if (color != Color.TRANSPARENT) {
+                val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
+                drawable?.setTint(color)
+                button.background = drawable
+            }
+        }
+    }
 
 
 }
