@@ -1,15 +1,12 @@
 package com.annoapp.raspberry;
 
-import androidx.annotation.RequiresApi;
-import android.os.Build;
-
-import java.io.Serializable;
-import java.sql.Time
+import android.os.Parcelable
 import java.time.LocalTime
 import java.util.UUID;
+import kotlinx.parcelize.Parcelize
 
-@RequiresApi(Build.VERSION_CODES.O)
-class Planif(private var Actif: Boolean) :Serializable {
+@Parcelize
+class Planif(private var Actif: Boolean) :Parcelable {
     //Propriete
     private lateinit var Titre: String
     private lateinit var Heure: LocalTime

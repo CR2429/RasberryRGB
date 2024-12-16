@@ -16,8 +16,6 @@ import com.annoapp.raspberry.databinding.ActivityPlanifBinding
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-
-@RequiresApi(Build.VERSION_CODES.O)
 class PlanifActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlanifBinding
@@ -29,11 +27,22 @@ class PlanifActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val data: Intent? = result.data
-                val resultValue = data?.getStringExtra("commande")
-                Toast.makeText(this, "Commande : $resultValue", Toast.LENGTH_SHORT).show()
-                if (resultValue != null) {
-                    thisPlanif.setCommande(resultValue)
+                val resultValue = data?.getParcelableExtra<Planif>("planif")
+                if {resultValue != null} {
+                    val value = resultValue as Planif
+                    val exists = planifArray.any { it.getID() == resultValue.getID() }
+                    if (exists) {
+                        val existingPlanif = planifArray.find { it.getID() == resultValue.getID() } as Planif
+
+                        existingPlanif.setTitre(resultValue.getTitre())
+                        existingPlanif.setHeure(resultValue.getHeure())
+                        existingPlanif.setCommande(resultValue.getCommande())
+                        existingPlanif.setActif(resultValue.getActif())
+                    } else {
+                        planifArray.add(value)
+                    }
                 }
+
             }
         }
 
