@@ -1,6 +1,7 @@
 package com.annoapp.raspberry
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -36,7 +37,9 @@ class PlanifActivity : AppCompatActivity() {
 
     //dialog de modification de la planification
     fun newPlanif() {
-
+        val intent = Intent(this,FormulairePlanifActivity::class.java)
+        intent.putExtra("IsNew",true)
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
