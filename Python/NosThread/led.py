@@ -65,13 +65,13 @@ def changeMode(direction):
 
     
     data["mode_active"] = True
-    if modes[data["current_mode_index"]] == "vague":
+    if modes[data["current_index"]] == "vague":
         data["mode_thread"] = threading.Thread(target=vague, name="vague")
         data["mode_thread"].start()
-    elif modes[data["current_mode_index"]] == "flash":
+    elif modes[data["current_index"]] == "flash":
         data["mode_thread"] = threading.Thread(target=flash, name="flash")
         data["mode_thread"].start()
-    elif modes[data["current_mode_index"]] == "full":
+    elif modes[data["current_index"]] == "full":
         full(*data["current_color"])
     
 
