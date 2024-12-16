@@ -43,7 +43,7 @@ class PlanifAdapter(private val context: Context, private val dataList: ArrayLis
             TvCommande.text = planif.getCommande()
         }
         else {
-            TvCommande.text = "${planif.getCommande()} - ${planif.getColor()}"
+            TvCommande.text = "Commande : ${planif.getCommande()}"
         }
 
         //Interaction

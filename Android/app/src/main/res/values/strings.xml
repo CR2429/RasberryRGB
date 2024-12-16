@@ -18,4 +18,5 @@
     <string name="heurePlanif">Heure : </string>
     <string name="commandePlanif">Commande : </string>
     <string name="commandeBouton">Selectionner la commande</string>
+    <string name="planif">Planifier</string>
 </resources>

@@ -3,6 +3,7 @@ package com.annoapp.raspberry
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Surcharge des interactions des items du menu
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.menuSettings -> {
@@ -35,6 +38,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menuModifier -> {
                 val intent = Intent(this, ModifyActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.menuPlanifier -> {
+                val intent = Intent(this, PlanifActivity::class.java)
                 startActivity(intent)
             }
         }
