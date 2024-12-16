@@ -1,5 +1,6 @@
 package com.annoapp.raspberry
 
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Binder
 import android.os.Build
@@ -11,7 +12,10 @@ import androidx.annotation.RequiresApi
 import com.annoapp.raspberry.databinding.ActivityFormulairePlanifBinding
 import java.io.IOException
 import java.io.ObjectInputStream
+import java.sql.Time
 import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.util.Calendar
 import java.util.Locale
 import java.util.Objects
 
@@ -39,9 +43,36 @@ class FormulairePlanifActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //bouton pour la commande
-        binding.BSauvegarde.setOnClickListener{
+        binding.BCommande.setOnClickListener{
             val intent = Intent(this, FormulairePlanifCommandeActivity::class.java)
             startActivityForResult.launch(intent)
+        }
+        //bouton pour l'heure
+        binding.BTime.setOnClickListener {
+            // Récupérer l'heure actuelle
+            val calendar = Calendar.getInstance()
+            val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+            val currentMinute = calendar.get(Calendar.MINUTE)
+
+            // Créer le TimePickerDialog
+            val timePickerDialog = TimePickerDialog(
+                this,
+                { _, hourOfDay, minute ->
+                    // Mettre à jour le TextView avec l'heure choisie
+                    binding.TvTime.text = String.format("Heure sélectionnée : %02d:%02d", hourOfDay, minute)
+
+                    val time = LocalTime.of(hourOfDay, minute)
+                    thisPlanif.setHeure(time)
+                },
+                currentHour,
+                currentMinute,
+                true // Utiliser le format 24 heures
+            )
+            timePickerDialog.show()
+        }
+        //bouton de la sauvegarde
+        binding.BSauvegarde.setOnClickListener {
+            
         }
     }
 
@@ -76,8 +107,8 @@ class FormulairePlanifActivity : AppCompatActivity() {
         //mettre les infos dans les inputs
         if(!intent.getBooleanExtra("IsNew",false)) {
             val timeF = SimpleDateFormat("HH:mm", Locale.getDefault())
-            val time = timeF.format(thisPlanif.getHeure())
-            binding.EtHeure.setText(time)
+            val time = String.format("Heure sélectionnée : %s", timeF.format(thisPlanif.getHeure()))
+            binding.TvTime.setText(time)
 
             binding.EtTitre.setText(thisPlanif.getTitre())
         }

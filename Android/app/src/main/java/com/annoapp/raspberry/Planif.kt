@@ -5,13 +5,14 @@ import android.os.Build;
 
 import java.io.Serializable;
 import java.sql.Time
+import java.time.LocalTime
 import java.util.UUID;
 
 @RequiresApi(Build.VERSION_CODES.O)
 class Planif(private var Actif: Boolean) :Serializable {
     //Propriete
     private lateinit var Titre: String
-    private lateinit var Heure: Time
+    private lateinit var Heure: LocalTime
     private lateinit var Commande: String
     private val ID = UUID.randomUUID().toString();
 
@@ -25,10 +26,10 @@ class Planif(private var Actif: Boolean) :Serializable {
     fun setTitre(titre:String) {
         this.Titre = titre
     }
-    fun getHeure() : Time {
+    fun getHeure() : LocalTime {
         return Heure
     }
-    fun setHeure(heure:Time) {
+    fun setHeure(heure:LocalTime) {
         this.Heure = heure
     }
     fun getCommande() : String {
