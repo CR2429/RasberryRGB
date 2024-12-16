@@ -69,29 +69,30 @@ class MainActivity : AppCompatActivity() {
         createNotificationChannel()
 
 
-        val buttonRainbow: Button = findViewById(R.id.button_rainbow)
         val buttonFlash: Button = findViewById(R.id.button_flash)
         val buttonVague: Button = findViewById(R.id.button_vague)
         val buttonPower: Button = findViewById(R.id.button_power)
         val buttonFull: Button = findViewById(R.id.button_full)
 
-        buttonRainbow.backgroundTintList = null
         buttonFlash.backgroundTintList = null
         buttonVague.backgroundTintList = null
         buttonPower.backgroundTintList = null
         buttonFull.backgroundTintList = null
 
-
-        buttonRainbow.setOnClickListener {
-            sendPostRequest("#FF5733") // Couleur orange
+        buttonPower.setOnClickListener {
+            sendPostRequest(toggle = true) // Allume
         }
 
         buttonFlash.setOnClickListener {
-            sendPostRequest("#33FF57") // Couleur vert clair
+            sendPostRequest(modeThread = "flash")
         }
 
         buttonVague.setOnClickListener {
-            sendPostRequest("#3357FF") // Couleur bleu
+            sendPostRequest(modeThread = "vague")
+        }
+
+        buttonFull.setOnClickListener {
+            sendPostRequest(modeThread = "full")
         }
 
         initializeButtons()
@@ -246,7 +247,7 @@ class MainActivity : AppCompatActivity() {
             // Ajouter un listener pour chaque bouton
             button.setOnClickListener {
                 val hexColor = String.format("#%06X", 0xFFFFFF and colors[index]) // Convertir la couleur en hexadécimal
-                sendPostRequest(hexColor) // Envoyer la couleur au serveur
+                sendPostRequest(color = hexColor) // Envoyer la couleur au serveur
             }
         }
     }
@@ -276,69 +277,65 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendPostRequest(currentColor: String) {
+    private fun sendPostRequest(toggle: Boolean? = null, modeThread: String? = null, color: String? = null) {
+        val jsonParam = JSONObject()
 
-        val (r, g, b) = hexToRgb(currentColor)
-
-
-        // Récupérer les SharedPreferences
-        val settings = getSharedPreferences("Settings", MODE_PRIVATE)
-        val ip = settings.getString("IP", "")
-        val port = settings.getString("PORT", "")
-
-        // Vérifier si l'IP et le port sont valides
-        if (ip.isNullOrEmpty() || port.isNullOrEmpty()) {
-            Toast.makeText(this, "L'adresse IP ou le port est manquant", Toast.LENGTH_SHORT).show()
-            return
+        // Ajouter des champs dynamiques au JSON
+        toggle?.let { jsonParam.put("toggle", it) }
+        modeThread?.let { jsonParam.put("mode_thread", it) }
+        color?.let {
+            val (r, g, b) = hexToRgb(it)
+            jsonParam.put("current_color", JSONObject().apply {
+                put("r", r)
+                put("g", g)
+                put("b", b)
+            })
         }
 
-        val url = "http://$ip:$port/" // Construire l'URL
+        Log.d("Request JSON", jsonParam.toString())
+
+        // URL Beeceptor
+        val url = "https://ledrgb.free.beeceptor.com/test"
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        val connection = URL(url).openConnection() as HttpURLConnection
-
         try {
+            val connection = URL(url).openConnection() as HttpURLConnection
             connection.apply {
                 requestMethod = "POST"
                 doOutput = true
                 setRequestProperty("Content-Type", "application/json")
             }
 
-            val jsonParam = JSONObject()
-            jsonParam.put("toggle", true)
-            jsonParam.put("current_color", JSONObject().apply {
-                put("r", r)  // RGB value for Red
-                put("g", g)  // RGB value for Green
-                put("b", b)  // RGB value for Blue
-            })
-            jsonParam.put("mode_thread", "AUTO")
-            jsonParam.put("mode_active", true)
-
-            // Envoyer les données
-            val outputWriter = OutputStreamWriter(connection.outputStream)
-            outputWriter.write(jsonParam.toString())
-            outputWriter.flush()
+            // Envoyer le JSON
+            connection.outputStream.use { outputStream ->
+                outputStream.write(jsonParam.toString().toByteArray())
+                outputStream.flush()
+            }
 
             // Lire la réponse
             val responseCode = connection.responseCode
             val responseMessage = connection.inputStream.bufferedReader().use { it.readText() }
-
             Log.i("Response", "Code: $responseCode, Message: $responseMessage")
 
-            showNotification("Requête réussie", "Code: $responseCode\nMessage: $responseMessage")
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                showNotification("Requête réussie", "Action effectuée avec succès")
+            } else {
+                val errorStream = connection.errorStream?.bufferedReader()?.use { it.readText() }
+                Log.e("Error Response", "Code: $responseCode, Error: $errorStream")
+                showNotification("Erreur", "Code: $responseCode\nError: $errorStream")
+            }
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("ERREUR", "Erreur lors de la requête : ${e.message}")
+            Log.e("Erreur", "Erreur lors de la requête : ${e.message}")
             Toast.makeText(this, "Erreur lors de la requête : ${e.message}", Toast.LENGTH_SHORT).show()
             showNotification("Erreur", "Erreur lors de la requête : ${e.message}")
-
-        } finally {
-            connection.disconnect()
         }
     }
+
+
 
 
 
