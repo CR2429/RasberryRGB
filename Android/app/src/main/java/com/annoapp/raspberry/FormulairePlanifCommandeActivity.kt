@@ -26,7 +26,7 @@ class FormulairePlanifCommandeActivity : AppCompatActivity() {
         val buttonPower: Button = binding.buttonPower
         val buttonFull: Button = binding.buttonFull
 
-        
+
         buttonFlash.backgroundTintList = null
         buttonVague.backgroundTintList = null
         buttonPower.backgroundTintList = null
@@ -62,12 +62,6 @@ class FormulairePlanifCommandeActivity : AppCompatActivity() {
         buttonVague.setOnClickListener {
             val resultIntent = Intent()
             resultIntent.putExtra("commande","vague")
-            setResult(RESULT_OK, resultIntent)
-            finish()
-        }
-        buttonRainbow.setOnClickListener {
-            val resultIntent = Intent()
-            resultIntent.putExtra("commande","arc-en-ciel")
             setResult(RESULT_OK, resultIntent)
             finish()
         }
