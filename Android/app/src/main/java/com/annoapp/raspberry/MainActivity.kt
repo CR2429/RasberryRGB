@@ -332,7 +332,7 @@ class MainActivity : AppCompatActivity() {
             Log.i("Response", "Code: $responseCode, Message: $responseMessage")
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                showNotification("Requête réussie", "Action effectuée avec succès")
+                showNotification("Changement appliqué", "Changement effectuée avec succès")
             } else {
                 val errorStream = connection.errorStream?.bufferedReader()?.use { it.readText() }
                 Log.e("Error Response", "Code: $responseCode, Error: $errorStream")
