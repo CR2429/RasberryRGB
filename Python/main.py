@@ -87,7 +87,7 @@ if __name__ == '__main__':
         #serveur get/post
         handler = MyHttpRequestHandler
         serveur = HTTPServer(('0.0.0.0', 4443), handler)
-        serveur.socket = ssl.wrap_socket(serveur.socket, keyfile='cle.pem', certfile='certificat.pem', server_side=True)
+        #serveur.socket = ssl.wrap_socket(serveur.socket, keyfile='cle.pem', certfile='certificat.pem', server_side=True)
         serveur.serve_forever()
         
         print('Serveur ouvert')
