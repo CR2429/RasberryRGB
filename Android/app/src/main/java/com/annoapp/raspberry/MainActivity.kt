@@ -280,6 +280,20 @@ class MainActivity : AppCompatActivity() {
     private fun sendPostRequest(toggle: Boolean? = null, modeThread: String? = null, color: String? = null) {
         val jsonParam = JSONObject()
 
+        val settings = getSharedPreferences("Settings", MODE_PRIVATE)
+        val ip = settings.getString("IP", "")
+        val port = settings.getString("PORT", "")
+
+        // Vérifier si l'IP et le port sont valides
+        if (ip.isNullOrEmpty() || port.isNullOrEmpty()) {
+            Toast.makeText(this, "L'adresse IP ou le port est manquant", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
+        // URL Beeceptor
+        val url = "http://${ip}:${port}"
+
         // Ajouter des champs dynamiques au JSON
         toggle?.let { jsonParam.put("toggle", it) }
         modeThread?.let { jsonParam.put("mode_thread", it) }
@@ -294,8 +308,6 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("Request JSON", jsonParam.toString())
 
-        // URL Beeceptor
-        val url = "https://ledrgb.free.beeceptor.com/test"
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
