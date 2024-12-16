@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 from config import config_data as data
-from NosThread.led import on_Off
+from NosThread.led import *
 
 #classe pour les requetes
 class MyHttpRequestHandler(BaseHTTPRequestHandler):
@@ -43,8 +43,10 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
             if data["on/off"]:
                 if 'current_color' in received_data:
                     data['current_color'] = received_data['current_color']
+                    setColor(*data["current_color"])
                 if 'mode_thread' in received_data:
                     data['mode_thread'] = received_data['mode_thread']
+                    changeModeClient()
                 if 'mode_active' in received_data:
                     data['mode_active'] = received_data['mode_active']
                 print("Données mises à jour :", data)
