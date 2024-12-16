@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 from config import config_data as data
+from NosThread.led import on_Off
 
 #classe pour les requetes
 class MyHttpRequestHandler(BaseHTTPRequestHandler):
@@ -17,7 +18,7 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
-        self.wfile.write(bytes(dataJson), "utf8")
+        self.wfile.write(bytes(dataJson, "utf-8"))
         
         print('Data envoyer : ' + dataJson)
         return 
@@ -36,7 +37,7 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
             # Appeler la méthode on_off si la clé 'toggle' est présente et vraie
             if 'toggle' in received_data and received_data['toggle']:
                 print("Basculement on/off déclenché via POST")
-                on_off()
+                on_Off()
             
             # Vérifier si l'état est "On" avant de traiter d'autres données
             if data["on/off"]:

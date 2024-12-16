@@ -1,5 +1,5 @@
 import time
-from NosThread.led import changeColor, changeMode, setColor
+from NosThread.led import changeColor, changeMode, setColor, on_Off
 from config import config_data as data
 import RPi.GPIO as GPIO
 
