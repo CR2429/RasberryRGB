@@ -1,5 +1,6 @@
 package com.annoapp.raspberry
 
+import android.Manifest
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -8,6 +9,9 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
 import android.widget.Button
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.pm.PackageManager
 import android.widget.GridLayout
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
@@ -16,11 +20,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import org.json.JSONObject
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,6 +66,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        createNotificationChannel()
 
 
         val buttonRainbow: Button = findViewById(R.id.button_rainbow)
@@ -71,6 +80,19 @@ class MainActivity : AppCompatActivity() {
         buttonVague.backgroundTintList = null
         buttonPower.backgroundTintList = null
         buttonFull.backgroundTintList = null
+
+
+        buttonRainbow.setOnClickListener {
+            sendPostRequest("#FF5733") // Couleur orange
+        }
+
+        buttonFlash.setOnClickListener {
+            sendPostRequest("#33FF57") // Couleur vert clair
+        }
+
+        buttonVague.setOnClickListener {
+            sendPostRequest("#3357FF") // Couleur bleu
+        }
 
         initializeButtons()
 
@@ -94,6 +116,86 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 101) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, now show the notification
+                sendNotification("Permission Granted", "You can now receive notifications.")
+            } else {
+                // Permission denied, handle accordingly
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = "post_request_channel"  // Use the same ID as in sendNotification
+            val channelName = "LED State Notifications"
+            val descriptionText = "Notifications for the LED state"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelId, channelName, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager =
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun sendNotification(title: String, message: String) {
+        val channelId = "post_request_channel"
+        val notificationId = 1
+
+        val builder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.pencil_edit_button)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+        // Afficher la notification
+        with(NotificationManagerCompat.from(this)) {
+            if (ActivityCompat.checkSelfPermission(
+                    this@MainActivity,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED) {
+
+                // If the permission is not granted, request it
+                ActivityCompat.requestPermissions(
+                    this@MainActivity,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    101  // You can use a custom request code
+                )
+                return
+            }
+
+            notify(notificationId, builder.build())
+
+        }
+    }
+
+    private fun showNotification(title: String, message: String) {
+        createNotificationChannel()
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            sendNotification(title, message)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                101
+            )
+        } else {
+            sendNotification(title, message)
+        }
+    }
 
     private fun initializeButtons() {
         buttonList.clear()
@@ -139,6 +241,13 @@ class MainActivity : AppCompatActivity() {
         buttonList.forEachIndexed { index, button ->
             button.background = ContextCompat.getDrawable(this, R.drawable.button_rond)
             button.backgroundTintList = ColorStateList.valueOf(colors[index])
+
+
+            // Ajouter un listener pour chaque bouton
+            button.setOnClickListener {
+                val hexColor = String.format("#%06X", 0xFFFFFF and colors[index]) // Convertir la couleur en hexadécimal
+                sendPostRequest(hexColor) // Envoyer la couleur au serveur
+            }
         }
     }
 
@@ -159,12 +268,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendPostRequest() {
+    private fun sendPostRequest(currentColor: String) {
+        // Récupérer les SharedPreferences
+        val settings = getSharedPreferences("Settings", MODE_PRIVATE)
+        val ip = settings.getString("IP", "")
+        val port = settings.getString("PORT", "")
+
+        // Vérifier si l'IP et le port sont valides
+        if (ip.isNullOrEmpty() || port.isNullOrEmpty()) {
+            Toast.makeText(this, "L'adresse IP ou le port est manquant", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val url = "http://$ip:$port/" // Construire l'URL
+
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        val url = URL("http://<votre_adresse_ip>:<votre_port>/")
-        val connection = url.openConnection() as HttpURLConnection
+        val connection = URL(url).openConnection() as HttpURLConnection
 
         try {
             connection.apply {
@@ -175,7 +296,7 @@ class MainActivity : AppCompatActivity() {
 
             val jsonParam = JSONObject()
             jsonParam.put("toggle", true)
-            jsonParam.put("current_color", "#FF5733")
+            jsonParam.put("current_color", currentColor) // Couleur dynamique
             jsonParam.put("mode_thread", "AUTO")
             jsonParam.put("mode_active", true)
 
@@ -188,14 +309,21 @@ class MainActivity : AppCompatActivity() {
             val responseCode = connection.responseCode
             val responseMessage = connection.inputStream.bufferedReader().use { it.readText() }
 
-            println("Response Code: $responseCode")
-            println("Response Message: $responseMessage")
+            Log.i("Response", "Code: $responseCode, Message: $responseMessage")
+
+            showNotification("Requête réussie", "Code: $responseCode\nMessage: $responseMessage")
+
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.e("ERREUR", "Erreur lors de la requête : ${e.message}")
+            Toast.makeText(this, "Erreur lors de la requête : ${e.message}", Toast.LENGTH_SHORT).show()
+            showNotification("Erreur", "Erreur lors de la requête : ${e.message}")
+
         } finally {
             connection.disconnect()
         }
     }
+
 
 
 }
