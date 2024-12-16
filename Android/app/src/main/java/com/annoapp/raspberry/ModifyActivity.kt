@@ -91,6 +91,7 @@ class ModifyActivity : AppCompatActivity() {
             .show()
     }
 
+    // Initialise les boutons avec des couleurs et les actions associées
     private fun initializeButtons() {
         buttonList.clear()
         buttonList.addAll(listOf(
@@ -123,17 +124,15 @@ class ModifyActivity : AppCompatActivity() {
         }
     }
 
-
+    // Méthode pour enregistrer la couleur pour un bouton
     private fun saveButtonColorById(button: Button, color: Int) {
         val buttonIdName = resources.getResourceEntryName(button.id) // Obtenir le nom de l'ID
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
-        // Enregistrer la couleur pour ce bouton
         editor.putInt(buttonIdName, color)
-        editor.apply() // Ne pas oublier d'appliquer les changements
+        editor.apply()
     }
-
 
     private fun getButtonColorById(button: Button): Int {
         val buttonIdName = resources.getResourceEntryName(button.id) // Obtenir le nom de l'ID

@@ -197,7 +197,7 @@ class MainActivity : AppCompatActivity() {
             sendNotification(title, message)
         }
     }
-
+    // Initialise les boutons avec des couleurs et les actions associées et donne à chaque bouton un OnClickListener
     private fun initializeButtons() {
         buttonList.clear()
         buttonList.addAll(listOf(
@@ -252,6 +252,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Convertit les couleurs hexadécimales en valeurs RGB pour la led rgb
+
     private fun hexToRgb(hexColor: String): Triple<Int, Int, Int> {
         val color = Color.parseColor(hexColor)  // Convert hex color string to a Color object
         val red = Color.red(color)
@@ -259,6 +261,8 @@ class MainActivity : AppCompatActivity() {
         val blue = Color.blue(color)
         return Triple(red, green, blue)  // Return as a Triple of RGB values
     }
+
+    // Méthode pour appliquer les nouvelles couleurs au bouton après modification
 
     private fun applySavedButtonColors() {
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
@@ -277,6 +281,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Méthode pour envoyer des requêtes post avec soit le mode, couleur ou on_off
     private fun sendPostRequest(toggle: Boolean? = null, modeThread: String? = null, color: String? = null) {
         val jsonParam = JSONObject()
 

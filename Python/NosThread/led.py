@@ -4,6 +4,9 @@ from config import config_data as data
 
 # Configure la couleur de la LED avec les valeurs spécifiées
 def setColor(r_val,g_val,b_val):
+    """
+    Méthode qui applique la couleur de la led
+    """ 
     data["led"].red=r_val/255 
     data["led"].green = g_val/255
     data["led"].blue = b_val/255 
@@ -29,7 +32,9 @@ def on_Off():
         setColor(*data["current_color"])
 
 def changeColor(direction):
-    #recuperer les valeurs
+    """
+    Méthode qui permet de changer la couleur de la del à partir du joystick
+    """ 
     color_list = data["color_list"]
     
     if direction == "right":
@@ -48,7 +53,9 @@ def changeColor(direction):
     print(f'Changed to color {data["current_index"]}: r={data["current_color"][0]}, g={data["current_color"][1]}, b={data["current_color"][2]}')
 
 def changeMode(direction):
-    #recuperer les datas
+    """
+    Méthode qui permet de changer le mode de la del à partir du joystick
+    """ 
     modes = ["vague", "flash", "full"]  
     
     if direction == 'up':
@@ -76,6 +83,9 @@ def changeMode(direction):
     
 
 def changeModeClient(mode):
+    """
+    Méthode qui permet de changer le mode de la del à partir du client
+    """    
     if data["mode_thread"] is not None and data["mode_thread"].is_alive():
         data["mode_active"] = False 
         data["mode_thread"].join()  

@@ -23,7 +23,7 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
         print('Data envoyer : ' + dataJson)
         return 
 
-
+    #en cas de requete post
     def do_POST(self):
         print("Requête POST détectée")
         
