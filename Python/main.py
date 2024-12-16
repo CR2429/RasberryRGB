@@ -82,7 +82,7 @@ if __name__ == '__main__':
         threadZ.start()
         
         time.sleep(0.01)
-        testThread.start()
+        #testThread.start()
         
         #serveur get/post
         handler = MyHttpRequestHandler
