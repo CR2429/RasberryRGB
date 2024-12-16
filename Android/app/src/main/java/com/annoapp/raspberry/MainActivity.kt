@@ -296,7 +296,7 @@ class MainActivity : AppCompatActivity() {
 
         // Ajouter des champs dynamiques au JSON
         toggle?.let { jsonParam.put("toggle", it) }
-        modeThread?.let { jsonParam.put("mode_thread", it) }
+        modeThread?.let { jsonParam.put("mode", it) }
         color?.let {
             val (r, g, b) = hexToRgb(it)
             jsonParam.put("current_color", JSONObject().apply {

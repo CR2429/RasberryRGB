@@ -75,19 +75,21 @@ def changeMode(direction):
         full(*data["current_color"])
     
 
-def changeModeClient():
+def changeModeClient(mode):
     if data["mode_thread"] is not None and data["mode_thread"].is_alive():
         data["mode_active"] = False 
         data["mode_thread"].join()  
     
     data["mode_active"] = True
-    
-    current_mode = modes[data["current_index"]]  
-    
+
+    current_mode = mode
+
     if current_mode == "vague":
         data["mode_thread"] = threading.Thread(target=vague, name="vague")
+        data["mode_thread"].start()
     elif current_mode == "flash":
         data["mode_thread"] = threading.Thread(target=flash, name="flash")
+        data["mode_thread"].start()
     elif current_mode == "full":
         full(*data["current_color"]) 
     

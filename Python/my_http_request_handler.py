@@ -44,11 +44,10 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
                 if 'current_color' in received_data:
                     data['current_color'] = received_data['current_color']
                     setColor(*data["current_color"])
-                if 'mode_thread' in received_data:
-                    data['mode_thread'] = received_data['mode_thread']
-                    changeModeClient()
-                if 'mode_active' in received_data:
+                if 'mode' in received_data:
                     data['mode_active'] = received_data['mode_active']
+                    changeModeClient(received_data['mode'])
+
                 print("Données mises à jour :", data)
             else:
                 print("L'état est Off, aucune donnée supplémentaire traitée.")
