@@ -10,7 +10,7 @@ def setColor(r_val,g_val,b_val):
 
 
 def on_Off():
-  """
+    """
     Change l'état on/off et met à jour les la LED RGB et la LED jaune.
     """
     if data["on/off"]:

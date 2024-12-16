@@ -251,6 +251,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun hexToRgb(hexColor: String): Triple<Int, Int, Int> {
+        val color = Color.parseColor(hexColor)  // Convert hex color string to a Color object
+        val red = Color.red(color)
+        val green = Color.green(color)
+        val blue = Color.blue(color)
+        return Triple(red, green, blue)  // Return as a Triple of RGB values
+    }
+
     private fun applySavedButtonColors() {
         val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
 
@@ -269,6 +277,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sendPostRequest(currentColor: String) {
+
+        val (r, g, b) = hexToRgb(currentColor)
+
+
         // Récupérer les SharedPreferences
         val settings = getSharedPreferences("Settings", MODE_PRIVATE)
         val ip = settings.getString("IP", "")
@@ -296,7 +308,11 @@ class MainActivity : AppCompatActivity() {
 
             val jsonParam = JSONObject()
             jsonParam.put("toggle", true)
-            jsonParam.put("current_color", currentColor) // Couleur dynamique
+            jsonParam.put("current_color", JSONObject().apply {
+                put("r", r)  // RGB value for Red
+                put("g", g)  // RGB value for Green
+                put("b", b)  // RGB value for Blue
+            })
             jsonParam.put("mode_thread", "AUTO")
             jsonParam.put("mode_active", true)
 
