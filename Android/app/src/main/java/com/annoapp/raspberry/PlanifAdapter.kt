@@ -10,7 +10,7 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 class PlanifAdapter(private val context: Context, private val dataList: ArrayList<Planif>): BaseAdapter() {
     override fun getCount(): Int {
         return dataList.size
@@ -25,6 +25,7 @@ class PlanifAdapter(private val context: Context, private val dataList: ArrayLis
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val planif = getItem(position) as Planif
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.lists_layout, parent, false)
@@ -37,7 +38,6 @@ class PlanifAdapter(private val context: Context, private val dataList: ArrayLis
 
         //customisation
         TvTitre.text = planif.getTitre()
-        TvHeure.text = planif.getHeure().toString()
         switch.isChecked = planif.getActif()
         if (planif.getCommande() == "Eteint") {
             TvCommande.text = planif.getCommande()
@@ -45,6 +45,10 @@ class PlanifAdapter(private val context: Context, private val dataList: ArrayLis
         else {
             TvCommande.text = "Commande : ${planif.getCommande()}"
         }
+        val time = planif.getHeure()
+        val heure = time.hour
+        val minute = time.minute
+        TvHeure.text = "${heure}:${minute}"
 
         //Interaction
         view.setOnClickListener{

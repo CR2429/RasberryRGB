@@ -1,6 +1,7 @@
 package com.annoapp.raspberry
 
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Build
@@ -10,8 +11,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import com.annoapp.raspberry.databinding.ActivityFormulairePlanifBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.IOException
 import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.time.LocalTime
@@ -29,9 +33,9 @@ class FormulairePlanifActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val data: Intent? = result.data
                 val resultValue = data?.getStringExtra("commande")
-                Toast.makeText(this, "Commande : $resultValue", Toast.LENGTH_SHORT).show()
                 if (resultValue != null) {
-                    thisPlanif.setCommande(resultValue)
+                    Toast.makeText(this, "Commande : $resultValue", Toast.LENGTH_SHORT).show()
+                    binding.TvFormCommand.text = resultValue
                 }
             }
         }
@@ -60,9 +64,8 @@ class FormulairePlanifActivity : AppCompatActivity() {
                 { _, hourOfDay, minute ->
                     // Mettre à jour le TextView avec l'heure choisie
                     binding.TvTime.text = String.format("Heure sélectionnée : %02d:%02d", hourOfDay, minute)
-
-                    val time = LocalTime.of(hourOfDay, minute)
-                    thisPlanif.setHeure(time)
+                    binding.TvFormHeure.text = hourOfDay.toString()
+                    binding.TvFormMinute.text = minute.toString()
                 },
                 currentHour,
                 currentMinute,
@@ -77,11 +80,11 @@ class FormulairePlanifActivity : AppCompatActivity() {
                 Toast.makeText(this,"Il manque un titre", Toast.LENGTH_SHORT).show()
                 error = true
             }
-            if (thisPlanif.getHeure() == null) {
+            if (binding.TvFormHeure.text.toString() == "") {
                 Toast.makeText(this,"Il manque une heure", Toast.LENGTH_SHORT).show()
                 error = true
             }
-            if (thisPlanif.getCommande() == null) {
+            if (binding.TvFormCommand.text.toString() == "") {
                 Toast.makeText(this, "Il manque une commande", Toast.LENGTH_SHORT).show()
                 error = true
             }
@@ -89,9 +92,21 @@ class FormulairePlanifActivity : AppCompatActivity() {
             //sauvegarde
             if (!error) {
                 thisPlanif.setTitre(binding.EtTitre.text.toString())
-                val resultIntent = Intent()
-                resultIntent.putExtra("planif",thisPlanif)
-                setResult(RESULT_OK, resultIntent)
+                thisPlanif.setCommande(binding.TvFormCommand.text.toString())
+                val time = LocalTime.of(binding.TvFormHeure.text.toString().toInt(), binding.TvFormMinute.text.toString().toInt())
+                thisPlanif.setHeure(time)
+                val exists = listePlanif.any { it.getID() == thisPlanif.getID() }
+                if (exists) {
+                    val existingPlanif = listePlanif.find { it.getID() == thisPlanif.getID() } as Planif
+
+                    existingPlanif.setTitre(thisPlanif.getTitre())
+                    existingPlanif.setHeure(thisPlanif.getHeure())
+                    existingPlanif.setCommande(thisPlanif.getCommande())
+                } else {
+                    listePlanif.add(thisPlanif)
+                }
+
+                finish()
             }
         }
     }
@@ -99,12 +114,15 @@ class FormulairePlanifActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
-        //deserialisation
+        //deseralisation
         listePlanif = arrayListOf<Planif>()
         try {
-            openFileInput("Planif.data").use {
+            openFileInput("Planif.json").use {
                 ObjectInputStream(it).use {
-                    listePlanif = it.readObject() as ArrayList<Planif>
+                    val gson = Gson()
+                    val json = it.bufferedReader().use { it.readText() }
+                    val type = object : TypeToken<ArrayList<Planif>>() {}.type
+                    listePlanif = gson.fromJson(json, type) //il y a une erreur ici
                 }
             }
         } catch (e: IOException) {
@@ -131,6 +149,24 @@ class FormulairePlanifActivity : AppCompatActivity() {
             binding.TvTime.setText(time)
 
             binding.EtTitre.setText(thisPlanif.getTitre())
+        }
+    }
+
+    //sauvegarde les donnees necessaire
+    override fun onPause() {
+        super.onPause()
+
+        //serialisation
+        try {
+            openFileOutput("Planif.json", Context.MODE_PRIVATE).use {
+                ObjectOutputStream(it).use {
+                    val gson = Gson()
+                    val json = gson.toJson(listePlanif)
+                    it.write(json.toByteArray())
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 }

@@ -41,4 +41,11 @@ class Planif(private var Actif: Boolean) :Parcelable {
     fun setActif(actif : Boolean) {
         this.Actif = actif
     }
+
+    fun isHeureInitialized(): Boolean {
+        return this::Heure.isInitialized
+    }
+    fun isCommandeInitialized(): Boolean {
+        return this::Commande.isInitialized
+    }
 }

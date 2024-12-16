@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import com.annoapp.raspberry.databinding.ActivityPlanifBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
@@ -28,8 +30,7 @@ class PlanifActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val data: Intent? = result.data
                 val resultValue = data?.getParcelableExtra<Planif>("planif")
-                if {resultValue != null} {
-                    val value = resultValue as Planif
+                if (resultValue != null) {
                     val exists = planifArray.any { it.getID() == resultValue.getID() }
                     if (exists) {
                         val existingPlanif = planifArray.find { it.getID() == resultValue.getID() } as Planif
@@ -37,9 +38,8 @@ class PlanifActivity : AppCompatActivity() {
                         existingPlanif.setTitre(resultValue.getTitre())
                         existingPlanif.setHeure(resultValue.getHeure())
                         existingPlanif.setCommande(resultValue.getCommande())
-                        existingPlanif.setActif(resultValue.getActif())
                     } else {
-                        planifArray.add(value)
+                        planifArray.add(resultValue)
                     }
                 }
 
@@ -84,9 +84,11 @@ class PlanifActivity : AppCompatActivity() {
 
         //serialisation
         try {
-            openFileOutput("Planif.data", Context.MODE_PRIVATE).use {
+            openFileOutput("Planif.json", Context.MODE_PRIVATE).use {
                 ObjectOutputStream(it).use {
-                    it.writeObject(planifArray)
+                    val gson = Gson()
+                    val json = gson.toJson(planifArray)
+                    it.write(json.toByteArray())
                 }
             }
         } catch (e: IOException) {
@@ -101,16 +103,19 @@ class PlanifActivity : AppCompatActivity() {
         //deseralisation
         planifArray = arrayListOf<Planif>()
         try {
-            openFileInput("Planif.data").use {
+            openFileInput("Planif.json").use {
                 ObjectInputStream(it).use {
-                    planifArray = it.readObject() as ArrayList<Planif>
+                    val gson = Gson()
+                    val json = it.bufferedReader().use { it.readText() }
+                    val type = object : TypeToken<ArrayList<Planif>>() {}.type
+                    planifArray = gson.fromJson(json, type) //il y a une erreur ici
                 }
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
         
-        listView = findViewById<ListView>(R.id.LPlanif)
+        listView = binding.LPlanif
         planifAdapter = PlanifAdapter(this, planifArray)
         listView.adapter = planifAdapter
     }
