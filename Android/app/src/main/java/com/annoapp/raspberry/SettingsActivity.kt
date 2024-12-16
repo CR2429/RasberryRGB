@@ -114,7 +114,7 @@ class SettingsActivity : AppCompatActivity() {
         if (noErreur) {
             val ip = inputIP.text.toString()
             val port = inputPort.text.toString()
-            val url = "https://${ip}:${port}"
+            val url = "http://${ip}:${port}"
 
             // Lancer une coroutine pour exécuter l'opération réseau
             CoroutineScope(Dispatchers.Main).launch {
