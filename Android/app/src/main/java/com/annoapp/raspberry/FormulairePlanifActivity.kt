@@ -47,6 +47,7 @@ class FormulairePlanifActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
+        super.onResume()
         //deserialisation
         listePlanif = arrayListOf<Planif>()
         try {
