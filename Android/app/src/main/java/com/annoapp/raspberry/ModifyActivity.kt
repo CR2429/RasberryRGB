@@ -43,13 +43,11 @@ class ModifyActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_modify)
 
-        val buttonRainbow: Button = findViewById(R.id.button_rainbow)
         val buttonFlash: Button = findViewById(R.id.button_flash)
         val buttonVague: Button = findViewById(R.id.button_vague)
         val buttonPower: Button = findViewById(R.id.button_power)
         val buttonFull: Button = findViewById(R.id.button_full)
 
-        buttonRainbow.backgroundTintList = null
         buttonFlash.backgroundTintList = null
         buttonVague.backgroundTintList = null
         buttonPower.backgroundTintList = null
