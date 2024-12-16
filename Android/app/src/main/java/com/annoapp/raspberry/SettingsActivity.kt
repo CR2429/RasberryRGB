@@ -15,6 +15,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.annoapp.raspberry.databinding.ActivitySettingsBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -96,15 +100,14 @@ class SettingsActivity : AppCompatActivity() {
 
     //tente de se connecter au rasberry
     fun tentativeDeConnection() {
-        //check si les inputs sont remplit de quelque chose
         var noErreur = true
 
         if (inputIP.text.isNullOrEmpty()) {
-            Toast.makeText(this,"Vous n'avez pas mis d'addresse IP", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Vous n'avez pas mis d'adresse IP", Toast.LENGTH_SHORT).show()
             noErreur = false
         }
         if (inputPort.text.isNullOrEmpty()) {
-            Toast.makeText(this,"Vous n'avez pas mis de Port", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Vous n'avez pas mis de Port", Toast.LENGTH_SHORT).show()
             noErreur = false
         }
 
@@ -112,15 +115,20 @@ class SettingsActivity : AppCompatActivity() {
             val ip = inputIP.text.toString()
             val port = inputPort.text.toString()
             val url = "https://${ip}:${port}"
-            val reponse = sendGetForTest(url)
 
-            if (reponse==true) {
-                Toast.makeText(this, "Connexion reussis", Toast.LENGTH_SHORT).show()
-                settings.edit().putString("IP",inputIP.text.toString()).apply()
-                settings.edit().putString("PORT",inputPort.text.toString()).apply()
+            // Lancer une coroutine pour exécuter l'opération réseau
+            CoroutineScope(Dispatchers.Main).launch {
+                val reponse = withContext(Dispatchers.IO) { sendGetForTest(url) }
+
+                if (reponse == true) {
+                    Toast.makeText(this@SettingsActivity, "Connexion réussie", Toast.LENGTH_SHORT).show()
+                    settings.edit().putString("IP", inputIP.text.toString()).apply()
+                    settings.edit().putString("PORT", inputPort.text.toString()).apply()
+                } else {
+                    Toast.makeText(this@SettingsActivity, "Erreur de connexion", Toast.LENGTH_SHORT).show()
+                }
             }
         }
-
     }
     private fun sendGetForTest(stUrl: String): Boolean? {
         val client = OkHttpClient()
@@ -130,16 +138,14 @@ class SettingsActivity : AppCompatActivity() {
             client.newCall(request).execute().use { response: Response ->
                 if (!response.isSuccessful) {
                     Log.e("ERREUR", "Erreur de connexion : ${response.code}")
-                    Toast.makeText(this, "Erreur de connexion : ${response.code}", Toast.LENGTH_SHORT).show()
                     null
                 } else {
-                    true//retourne true
+                    true
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("ERREUR", e.toString())
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
             null
         }
     }
