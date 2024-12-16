@@ -3,6 +3,7 @@ package com.annoapp.raspberry
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -14,10 +15,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
 
 class MainActivity : AppCompatActivity() {
 
     private val buttonList = mutableListOf<Button>()
+    
 
     // Surcharge pour la creation du menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Surcharge des interactions des items du menu
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.menuSettings -> {
@@ -36,10 +40,15 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, ModifyActivity::class.java)
                 startActivity(intent)
             }
+            R.id.menuPlanifier -> {
+                val intent = Intent(this, PlanifActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         return super.onOptionsItemSelected(item)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +69,20 @@ class MainActivity : AppCompatActivity() {
 
         initializeButtons()
 
+        applySavedButtonColors()
+
+
+
         buttonList.forEach { button ->
             button.backgroundTintList = null
         }
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        applySavedButtonColors()
 
     }
     override fun onPause() {
@@ -118,9 +137,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun applySavedButtonColors() {
+        val sharedPreferences = getSharedPreferences("ButtonColors", MODE_PRIVATE)
 
+        buttonList.forEach { button ->
+            val buttonId = resources.getResourceEntryName(button.id)
 
+            // Récupérer la couleur enregistrée sous forme d'entier
+            val color = sharedPreferences.getInt(buttonId, Color.TRANSPARENT)
 
+            if (color != Color.TRANSPARENT) {
+                val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
+                drawable?.setTint(color)
+                button.background = drawable
+            }
+        }
+    }
 
 
 }

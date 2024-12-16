@@ -13,4 +13,10 @@
     <string name="switch_on">Activer</string>
     <string name="switch_off">Desactiver</string>
     <string name="close">Fermer</string>
+    <string name="planifCreation">Creation d\'une tache planifier</string>
+    <string name="titrePlanif">Titre : </string>
+    <string name="heurePlanif">Heure : </string>
+    <string name="commandePlanif">Commande : </string>
+    <string name="commandeBouton">Selectionner la commande</string>
+    <string name="planif">Planifier</string>
 </resources>

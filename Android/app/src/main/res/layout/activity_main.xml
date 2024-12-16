@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button_modifier"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_margin="8dp"
-        android:text="Modifier"
-        app:layout_constraintBottom_toTopOf="@id/button_power"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_percent="0.2"/>
-
 
     <Button
         android:id="@+id/button_power"

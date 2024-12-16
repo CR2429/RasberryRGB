@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/TvTitle">
 
         <TextView
-            android:id="@+id/TvNotification"
+            android:id="@+id/TvConnexion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
