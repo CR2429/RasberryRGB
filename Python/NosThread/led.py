@@ -9,7 +9,7 @@ def setColor(r_val,g_val,b_val):
     data["led"].blue = b_val/255 
 
 
-def on_Off()
+def on_Off():
   """
     Change l'état on/off et met à jour les la LED RGB et la LED jaune.
     """
