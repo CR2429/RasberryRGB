@@ -72,7 +72,26 @@ class FormulairePlanifActivity : AppCompatActivity() {
         }
         //bouton de la sauvegarde
         binding.BSauvegarde.setOnClickListener {
-            
+            var error = false
+            if (binding.EtTitre.text.isEmpty()) {
+                Toast.makeText(this,"Il manque un titre", Toast.LENGTH_SHORT).show()
+                error = true
+            }
+            if (thisPlanif.getHeure() == null) {
+                Toast.makeText(this,"Il manque une heure", Toast.LENGTH_SHORT).show()
+                error = true
+            }
+            if (thisPlanif.getCommande() == null) {
+                Toast.makeText(this, "Il manque une commande", Toast.LENGTH_SHORT).show()
+                error = true
+            }
+
+            //sauvegarde
+            if (!error) {
+                if (intent.getBooleanExtra("IsNew", true)) {
+                    thisPlanif.setTitre(binding.EtTitre.text.toString())
+                }
+            }
         }
     }
 
