@@ -88,9 +88,10 @@ class FormulairePlanifActivity : AppCompatActivity() {
 
             //sauvegarde
             if (!error) {
-                if (intent.getBooleanExtra("IsNew", true)) {
-                    thisPlanif.setTitre(binding.EtTitre.text.toString())
-                }
+                thisPlanif.setTitre(binding.EtTitre.text.toString())
+                val resultIntent = Intent()
+                resultIntent.putExtra("planif",thisPlanif)
+                setResult(RESULT_OK, resultIntent)
             }
         }
     }

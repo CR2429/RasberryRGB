@@ -9,6 +9,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ListView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import com.annoapp.raspberry.databinding.ActivityPlanifBinding
 import java.io.IOException
@@ -23,6 +25,17 @@ class PlanifActivity : AppCompatActivity() {
     private lateinit var planifAdapter: PlanifAdapter
     private lateinit var BoutonNew: Button
     private lateinit var listView : ListView
+    private val startActivityForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data: Intent? = result.data
+                val resultValue = data?.getStringExtra("commande")
+                Toast.makeText(this, "Commande : $resultValue", Toast.LENGTH_SHORT).show()
+                if (resultValue != null) {
+                    thisPlanif.setCommande(resultValue)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
