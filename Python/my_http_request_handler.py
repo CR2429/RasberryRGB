@@ -42,7 +42,8 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
             # Vérifier si l'état est "On" avant de traiter d'autres données
             if data["on/off"]:
                 if 'current_color' in received_data:
-                    data['current_color'] = received_data['current_color']
+                    color_data = received_data['current_color']
+                    data['current_color'] = (color_data['r'], color_data['g'], color_data['b'])
                     setColor(*data["current_color"])
                 if 'mode' in received_data:
                     changeModeClient(received_data['mode'])
