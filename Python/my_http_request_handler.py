@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 from config import config_data as data
-from NosThread.led import on_Off
+from NosThread.led import *
 
 #classe pour les requetes
 class MyHttpRequestHandler(BaseHTTPRequestHandler):
@@ -23,7 +23,7 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
         print('Data envoyer : ' + dataJson)
         return 
 
-
+    #en cas de requete post
     def do_POST(self):
         print("Requête POST détectée")
         
@@ -42,11 +42,11 @@ class MyHttpRequestHandler(BaseHTTPRequestHandler):
             # Vérifier si l'état est "On" avant de traiter d'autres données
             if data["on/off"]:
                 if 'current_color' in received_data:
-                    data['current_color'] = received_data['current_color']
-                if 'mode_thread' in received_data:
-                    data['mode_thread'] = received_data['mode_thread']
-                if 'mode_active' in received_data:
-                    data['mode_active'] = received_data['mode_active']
+                    color_data = received_data['current_color']
+                    data['current_color'] = (color_data['r'], color_data['g'], color_data['b'])
+                    setColor(*data["current_color"])
+                if 'mode' in received_data:
+                    changeModeClient(received_data['mode'])
                 print("Données mises à jour :", data)
             else:
                 print("L'état est Off, aucune donnée supplémentaire traitée.")
