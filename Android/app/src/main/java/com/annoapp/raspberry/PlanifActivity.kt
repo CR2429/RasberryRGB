@@ -2,22 +2,22 @@ package com.annoapp.raspberry
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ListView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import com.annoapp.raspberry.databinding.ActivityPlanifBinding
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.time.LocalTime
+
 class PlanifActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlanifBinding

@@ -1,6 +1,8 @@
 package com.annoapp.raspberry;
 
+import android.os.Build
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
 import java.time.LocalTime
 import java.util.UUID;
 import kotlinx.parcelize.Parcelize
@@ -11,7 +13,9 @@ class Planif(private var Actif: Boolean) :Parcelable {
     private lateinit var Titre: String
     private lateinit var Heure: LocalTime
     private lateinit var Commande: String
-    private val ID = UUID.randomUUID().toString();
+    private val ID = UUID.randomUUID().toString()
+    private var HeureString: String = "0"
+    private var MinuteString: String = "0"
 
     // get-set
     fun getID(): String {
@@ -23,11 +27,18 @@ class Planif(private var Actif: Boolean) :Parcelable {
     fun setTitre(titre:String) {
         this.Titre = titre
     }
-    fun getHeure() : LocalTime {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getHeure(): LocalTime {
+        if (HeureString.isNotEmpty()) {
+            Heure = LocalTime.of(HeureString.toInt(),MinuteString.toInt())
+        }
         return Heure
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     fun setHeure(heure:LocalTime) {
         this.Heure = heure
+        this.HeureString = heure.hour.toString()
+        this.MinuteString = heure.minute.toString()
     }
     fun getCommande() : String {
         return Commande
