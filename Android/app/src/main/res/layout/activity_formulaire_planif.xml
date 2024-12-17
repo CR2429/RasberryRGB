@@ -7,6 +7,14 @@
     tools:context=".FormulairePlanifActivity">
 
     <TextView
+        android:id="@+id/TvFormMinute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="138dp"
+        tools:layout_editor_absoluteY="477dp" />
+
+    <TextView
         android:id="@+id/TvTitreForm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,41 +52,15 @@
         app:layout_constraintTop_toTopOf="@+id/TvPlanifTitre" />
 
     <TextView
-        android:id="@+id/TvPlanifHeure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/heurePlanif"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TvPlanifTitre" />
-
-    <EditText
-        android:id="@+id/EtHeure"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
-        android:inputType="time"
-        app:layout_constraintBottom_toBottomOf="@+id/TvPlanifHeure"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/TvPlanifHeure"
-        app:layout_constraintTop_toTopOf="@+id/TvPlanifHeure" />
-
-    <TextView
         android:id="@+id/EtCommande"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/commandePlanif"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TvPlanifHeure" />
+        app:layout_constraintStart_toStartOf="@+id/TvTime"
+        app:layout_constraintTop_toBottomOf="@+id/BTime" />
 
     <Button
         android:id="@+id/BCommande"
@@ -99,5 +81,41 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/TvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Heure sélectionnée : --:--"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/TvPlanifTitre"
+        app:layout_constraintTop_toBottomOf="@+id/EtTitre" />
+
+    <Button
+        android:id="@+id/BTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Sélectionner l'heure"
+        app:layout_constraintEnd_toEndOf="@+id/EtTitre"
+        app:layout_constraintStart_toStartOf="@+id/TvTime"
+        app:layout_constraintTop_toBottomOf="@+id/TvTime" />
+
+    <TextView
+        android:id="@+id/TvFormHeure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="413dp" />
+
+    <TextView
+        android:id="@+id/TvFormCommand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="202dp"
+        tools:layout_editor_absoluteY="531dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

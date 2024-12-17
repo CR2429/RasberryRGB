@@ -129,6 +129,14 @@ class FormulairePlanifCommandeActivity : AppCompatActivity() {
         buttonList.forEachIndexed { index, button ->
             button.background = ContextCompat.getDrawable(this, R.drawable.button_rond)
             button.backgroundTintList = ColorStateList.valueOf(colors[index])
+
+            button.setOnClickListener{
+                val hexColor = String.format("#%06X", 0xFFFFFF and colors[index]) // Convertir la couleur en hexadécimal
+                val resultIntent = Intent()
+                resultIntent.putExtra("commande",hexColor)
+                setResult(RESULT_OK, resultIntent)
+                finish()
+            }
         }
     }
 
@@ -146,13 +154,6 @@ class FormulairePlanifCommandeActivity : AppCompatActivity() {
                 val drawable = ContextCompat.getDrawable(this, R.drawable.button_rond)
                 drawable?.setTint(color)
                 button.background = drawable
-            }
-
-            button.setOnClickListener{
-                val resultIntent = Intent()
-                resultIntent.putExtra("commande",color)
-                setResult(RESULT_OK, resultIntent)
-                finish()
             }
         }
     }
